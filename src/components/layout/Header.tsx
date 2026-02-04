@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useQuoteModal } from '@/hooks/useQuoteModal';
 
 const scrollToSection = (sectionId: string) => {
@@ -18,15 +19,20 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-border">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 max-w-5xl">
         <div className="flex items-center justify-between h-16">
           {/* 로고 */}
           <button
             onClick={scrollToTop}
             className="flex items-center gap-2"
           >
-            <span className="text-xl font-bold text-primary">S&C</span>
-            <span className="hidden sm:inline text-sm text-text-secondary">신차장기렌트리스</span>
+            <Image
+              src="/logo.png"
+              alt="S&C 신차장기렌트리스"
+              width={180}
+              height={50}
+              className="h-10 w-auto"
+            />
           </button>
 
           {/* 네비게이션 */}
@@ -50,7 +56,7 @@ export default function Header() {
               빠른 상담
             </button>
             <a
-              href="tel:1844-1429"
+              href="tel:0000-0000"
               className="px-4 py-2 text-sm font-medium border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-1"
             >
               <svg
@@ -62,7 +68,7 @@ export default function Header() {
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
-              <span className="hidden md:inline">1844-1429</span>
+              <span className="hidden md:inline">0000-0000</span>
             </a>
           </nav>
         </div>

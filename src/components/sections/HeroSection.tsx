@@ -10,7 +10,7 @@ export default function HeroSection() {
       {/* 배경 오버레이 */}
       <div className="absolute inset-0 bg-black/20" />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 max-w-5xl relative z-10">
         <div className="max-w-2xl">
           {/* 타이틀 */}
           <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">

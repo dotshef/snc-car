@@ -1,4 +1,5 @@
 import StrengthCard from '@/components/cards/StrengthCard';
+import FadeInUp from '@/components/animation/FadeInUp';
 
 const strengths = [
   {
@@ -72,24 +73,30 @@ export default function StrengthSection() {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4 max-w-5xl">
         {/* 섹션 헤더 */}
-        <h2 className="text-2xl font-bold text-text-primary mb-2 text-center">
-          왜 <span className="text-[#1e3a5f]">S&C</span> 신차장기렌트리스일까?
-        </h2>
-        <p className="text-text-secondary text-center mb-10">
-          S&C만의 차별화된 서비스를 경험해보세요
-        </p>
+        <FadeInUp>
+          <h2 className="text-2xl font-bold text-text-primary mb-2 text-center">
+            왜 <span className="text-[#1e3a5f]">S&C</span> 신차장기렌트리스일까?
+          </h2>
+        </FadeInUp>
+        <FadeInUp delay={100}>
+          <p className="text-text-secondary text-center mb-10">
+            S&C만의 차별화된 서비스를 경험해보세요
+          </p>
+        </FadeInUp>
 
-        {/* 강점 카드 그리드 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {strengths.map((strength) => (
-            <StrengthCard
-              key={strength.id}
-              icon={strength.icon}
-              title={strength.title}
-              description={strength.description}
-            />
-          ))}
-        </div>
+        <FadeInUp delay={200}>
+          {/* 강점 카드 그리드 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {strengths.map((strength) => (
+                <StrengthCard
+                    key={strength.id}
+                    icon={strength.icon}
+                    title={strength.title}
+                    description={strength.description}
+                />
+            ))}
+          </div>
+        </FadeInUp>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import FadeInUp from '@/components/animation/FadeInUp';
 
 const faqs = [
   {
@@ -51,47 +52,51 @@ export default function FAQSection() {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4 max-w-3xl">
         {/* 섹션 헤더 */}
-        <h2 className="text-2xl font-bold text-text-primary mb-8 text-center">
-          자주 묻는 질문
-        </h2>
+        <FadeInUp>
+          <h2 className="text-2xl font-bold text-text-primary mb-8 text-center">
+            자주 묻는 질문
+          </h2>
+        </FadeInUp>
 
         {/* FAQ 아코디언 */}
-        <div className="space-y-3">
-          {faqs.map((faq) => (
-            <div
-              key={faq.id}
-              className="border border-border rounded-xl overflow-hidden bg-gradient-to-b from-white to-gray-50 hover:border-secondary transition-colors"
-            >
-              {/* 질문 */}
-              <button
-                onClick={() => toggleFAQ(faq.id)}
-                className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
-              >
+        <FadeInUp delay={150}>
+          <div className="space-y-3">
+            {faqs.map((faq) => (
+                <div
+                    key={faq.id}
+                    className="border border-border rounded-xl overflow-hidden bg-gradient-to-b from-white to-gray-50 hover:border-secondary transition-colors"
+                >
+                  {/* 질문 */}
+                  <button
+                      onClick={() => toggleFAQ(faq.id)}
+                      className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
+                  >
                 <span className="font-medium text-text-primary pr-4">
                   {faq.question}
                 </span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`w-5 h-5 text-text-secondary flex-shrink-0 transition-transform ${
-                    openId === faq.id ? 'rotate-180' : ''
-                  }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`w-5 h-5 text-text-secondary flex-shrink-0 transition-transform ${
+                            openId === faq.id ? 'rotate-180' : ''
+                        }`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
 
-              {/* 답변 */}
-              {openId === faq.id && (
-                <div className="p-4 bg-bg-secondary border-t border-border">
-                  <p className="text-text-secondary leading-relaxed">{faq.answer}</p>
+                  {/* 답변 */}
+                  {openId === faq.id && (
+                      <div className="p-4 bg-bg-secondary border-t border-border">
+                        <p className="text-text-secondary leading-relaxed">{faq.answer}</p>
+                      </div>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        </FadeInUp>
       </div>
     </section>
   );

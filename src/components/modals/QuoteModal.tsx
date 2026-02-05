@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { useQuoteModal } from '@/hooks/useQuoteModal';
 import { submitQuoteRequest } from '@/data/services/quote.service';
 import { normalizePhoneNumber, validatePhoneNumber, validateName } from '@/utils/validators';
@@ -17,10 +17,21 @@ const INITIAL_FUND_TYPES: InitialFundType[] = ['보증금', '선수금'];
 const INITIAL_FUND_RATES: InitialFundRate[] = [0, 10, 20, 30];
 const CONTRACT_PERIODS: ContractPeriod[] = [36, 48, 60];
 
-const REGIONS = [
-  '서울', '경기', '인천', '부산', '대구', '대전', '광주', '울산', '세종',
-  '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주',
-];
+const INITIAL_FUND_OPTIONS = INITIAL_FUND_TYPES.flatMap((type) =>
+  INITIAL_FUND_RATES.map((rate) => `${type} ${rate}%`)
+);
+
+function parseInitialFund(value: string): { type: InitialFundType; rate: InitialFundRate } {
+  const match = value.match(/^(보증금|선수금)\s*(\d+)%$/);
+  return {
+    type: (match?.[1] ?? '보증금') as InitialFundType,
+    rate: Number(match?.[2] ?? 0) as InitialFundRate,
+  };
+}
+
+const inputClass = 'w-full px-3 py-2.5 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary';
+const inputErrorClass = 'w-full px-3 py-2.5 border border-badge-immediate rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary';
+const labelClass = 'block text-sm text-text-secondary mb-1';
 
 export default function QuoteModal() {
   const { isOpen, selectedCar, closeModal } = useQuoteModal();
@@ -30,15 +41,24 @@ export default function QuoteModal() {
     phone: '',
     region: '',
     customerType: '개인' as CustomerType,
-    initialFundType: '보증금' as InitialFundType,
-    initialFundRate: 0 as InitialFundRate,
-    contractPeriod: 48 as ContractPeriod,
+    initialFund: '보증금 0%',
+    contractPeriod: 36 as ContractPeriod,
+    desiredCar: '',
     privacyAgreed: false,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && selectedCar) {
+      setFormData((prev) => ({
+        ...prev,
+        desiredCar: `${selectedCar.manufacturerName} ${selectedCar.name}`,
+      }));
+    }
+  }, [isOpen, selectedCar]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -48,10 +68,14 @@ export default function QuoteModal() {
 
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]:
+        type === 'checkbox'
+          ? checked
+          : name === 'contractPeriod'
+            ? (Number(value) as ContractPeriod)
+            : value,
     }));
 
-    // 에러 초기화
     if (errors[name]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -73,7 +97,7 @@ export default function QuoteModal() {
     }
 
     if (!formData.region) {
-      newErrors.region = '지역을 선택해주세요.';
+      newErrors.region = '지역을 입력해주세요.';
     }
 
     if (!formData.privacyAgreed) {
@@ -94,11 +118,18 @@ export default function QuoteModal() {
     setIsSubmitting(true);
 
     try {
+      const { type: fundType, rate: fundRate } = parseInitialFund(formData.initialFund);
+
       const request: QuoteRequest = {
-        ...formData,
+        name: formData.name,
         phone: normalizePhoneNumber(formData.phone),
-        selectedCarName: selectedCar?.name,
-        selectedManufacturerName: selectedCar?.manufacturerName,
+        region: formData.region,
+        customerType: formData.customerType,
+        initialFundType: fundType,
+        initialFundRate: fundRate,
+        contractPeriod: formData.contractPeriod,
+        selectedCarName: formData.desiredCar || undefined,
+        privacyAgreed: formData.privacyAgreed,
       };
 
       const result = await submitQuoteRequest(request);
@@ -116,16 +147,15 @@ export default function QuoteModal() {
 
   const handleClose = () => {
     closeModal();
-    // 폼 초기화
     setTimeout(() => {
       setFormData({
         name: '',
         phone: '',
         region: '',
         customerType: '개인',
-        initialFundType: '보증금',
-        initialFundRate: 0,
-        contractPeriod: 48,
+        initialFund: '보증금 0%',
+        contractPeriod: 36,
+        desiredCar: '',
         privacyAgreed: false,
       });
       setErrors({});
@@ -144,7 +174,7 @@ export default function QuoteModal() {
       />
 
       {/* 모달 컨텐츠 */}
-      <div className="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+      <div className="relative bg-white rounded-lg shadow-xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
         {/* 헤더 */}
         <div className="flex items-center justify-between p-4 border-b border-border">
           <h2 className="text-lg font-bold text-text-primary">빠른 견적 문의</h2>
@@ -193,183 +223,149 @@ export default function QuoteModal() {
         ) : (
           /* 폼 */
           <form onSubmit={handleSubmit} className="p-4">
-            {/* 선택된 차량 정보 */}
-            {selectedCar && (
-              <div className="mb-4 p-3 bg-bg-secondary rounded-lg">
-                <p className="text-sm text-text-secondary">선택 차량</p>
-                <p className="font-medium text-text-primary">
-                  {selectedCar.manufacturerName} {selectedCar.name}
-                </p>
-              </div>
-            )}
 
-            {/* 이름 */}
+            {/* Row 4: 차종 */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-text-primary mb-1">
-                이름 <span className="text-badge-immediate">*</span>
-              </label>
+              <label className={labelClass}>차종</label>
               <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="이름을 입력해주세요"
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                  errors.name ? 'border-badge-immediate' : 'border-border'
-                }`}
+                  type="text"
+                  name="desiredCar"
+                  value={formData.desiredCar}
+                  onChange={handleInputChange}
+                  placeholder="ex) 현대 디 올 뉴 팰리세이드"
+                  className={inputClass}
               />
-              {errors.name && (
-                <p className="text-sm text-badge-immediate mt-1">{errors.name}</p>
-              )}
             </div>
 
-            {/* 전화번호 */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-text-primary mb-1">
-                연락처 <span className="text-badge-immediate">*</span>
-              </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                placeholder="010-1234-5678"
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                  errors.phone ? 'border-badge-immediate' : 'border-border'
-                }`}
-              />
-              {errors.phone && (
-                <p className="text-sm text-badge-immediate mt-1">{errors.phone}</p>
-              )}
-            </div>
-
-            {/* 지역 */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-text-primary mb-1">
-                지역 <span className="text-badge-immediate">*</span>
-              </label>
-              <select
-                name="region"
-                value={formData.region}
-                onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary ${
-                  errors.region ? 'border-badge-immediate' : 'border-border'
-                }`}
-              >
-                <option value="">지역을 선택해주세요</option>
-                {REGIONS.map((region) => (
-                  <option key={region} value={region}>
-                    {region}
-                  </option>
-                ))}
-              </select>
-              {errors.region && (
-                <p className="text-sm text-badge-immediate mt-1">{errors.region}</p>
-              )}
-            </div>
-
-            {/* 유형 */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-text-primary mb-1">
-                유형 <span className="text-badge-immediate">*</span>
-              </label>
-              <div className="flex gap-2">
-                {CUSTOMER_TYPES.map((type) => (
-                  <button
-                    key={type}
-                    type="button"
-                    onClick={() => setFormData((prev) => ({ ...prev, customerType: type }))}
-                    className={`flex-1 py-2 px-3 text-sm rounded-lg border transition-colors ${
-                      formData.customerType === type
-                        ? 'bg-primary text-white border-primary'
-                        : 'bg-white text-text-secondary border-border hover:border-secondary'
-                    }`}
-                  >
-                    {type}
-                  </button>
-                ))}
+            {/* Row 1: 성함 또는 회사명 / 연락처 */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <div>
+                <label className={labelClass}>성함 또는 회사명</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder=""
+                  className={errors.name ? inputErrorClass : inputClass}
+                />
+                {errors.name && (
+                  <p className="text-xs text-badge-immediate mt-1">{errors.name}</p>
+                )}
+              </div>
+              <div>
+                <label className={labelClass}>연락처</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder="('-' 없이)"
+                  className={errors.phone ? inputErrorClass : inputClass}
+                />
+                {errors.phone && (
+                  <p className="text-xs text-badge-immediate mt-1">{errors.phone}</p>
+                )}
               </div>
             </div>
 
-            {/* 초기자금 */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-text-primary mb-1">
-                초기자금 <span className="text-badge-immediate">*</span>
-              </label>
-              <div className="flex gap-2 mb-2">
-                {INITIAL_FUND_TYPES.map((type) => (
-                  <button
-                    key={type}
-                    type="button"
-                    onClick={() => setFormData((prev) => ({ ...prev, initialFundType: type }))}
-                    className={`flex-1 py-2 px-3 text-sm rounded-lg border transition-colors ${
-                      formData.initialFundType === type
-                        ? 'bg-primary text-white border-primary'
-                        : 'bg-white text-text-secondary border-border hover:border-secondary'
-                    }`}
-                  >
-                    {type}
-                  </button>
-                ))}
+            {/* Row 2: 지역 / 유형 */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <div>
+                <label className={labelClass}>지역</label>
+                <input
+                  type="text"
+                  name="region"
+                  value={formData.region}
+                  onChange={handleInputChange}
+                  placeholder="ex) 서울 / 경기"
+                  className={errors.region ? inputErrorClass : inputClass}
+                />
+                {errors.region && (
+                  <p className="text-xs text-badge-immediate mt-1">{errors.region}</p>
+                )}
               </div>
-              <div className="flex gap-2">
-                {INITIAL_FUND_RATES.map((rate) => (
-                  <button
-                    key={rate}
-                    type="button"
-                    onClick={() => setFormData((prev) => ({ ...prev, initialFundRate: rate }))}
-                    className={`flex-1 py-2 px-3 text-sm rounded-lg border transition-colors ${
-                      formData.initialFundRate === rate
-                        ? 'bg-secondary text-white border-secondary'
-                        : 'bg-white text-text-secondary border-border hover:border-secondary'
-                    }`}
-                  >
-                    {rate}%
-                  </button>
-                ))}
+              <div>
+                <label className={labelClass}>유형</label>
+                <select
+                  name="customerType"
+                  value={formData.customerType}
+                  onChange={handleInputChange}
+                  className={inputClass}
+                >
+                  {CUSTOMER_TYPES.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
-            {/* 계약기간 */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-text-primary mb-1">
-                계약기간 <span className="text-badge-immediate">*</span>
-              </label>
-              <div className="flex gap-2">
-                {CONTRACT_PERIODS.map((period) => (
-                  <button
-                    key={period}
-                    type="button"
-                    onClick={() => setFormData((prev) => ({ ...prev, contractPeriod: period }))}
-                    className={`flex-1 py-2 px-3 text-sm rounded-lg border transition-colors ${
-                      formData.contractPeriod === period
-                        ? 'bg-primary text-white border-primary'
-                        : 'bg-white text-text-secondary border-border hover:border-secondary'
-                    }`}
-                  >
-                    {period}개월
-                  </button>
-                ))}
+            {/* Row 3: 초기자금 / 계약기간 */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <div>
+                <label className={labelClass}>초기자금</label>
+                <select
+                  name="initialFund"
+                  value={formData.initialFund}
+                  onChange={handleInputChange}
+                  className={inputClass}
+                >
+                  {INITIAL_FUND_OPTIONS.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className={labelClass}>계약기간</label>
+                <select
+                  name="contractPeriod"
+                  value={formData.contractPeriod}
+                  onChange={handleInputChange}
+                  className={inputClass}
+                >
+                  {CONTRACT_PERIODS.map((period) => (
+                    <option key={period} value={period}>
+                      {period}개월
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
-            {/* 개인정보 동의 */}
-            <div className="mb-6">
-              <label className="flex items-start gap-2 cursor-pointer">
+            {/* 개인정보 처리방침 */}
+            <div className="mb-3 border border-border rounded-lg p-3 max-h-40 overflow-y-auto text-xs text-text-secondary leading-relaxed">
+              <p className="mb-2">
+                S&C 신차장기렌트리스(이하 &apos;회사&apos;라 한다)는 개인정보 보호법 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 하기 위하여 다음과 같이 개인정보 처리지침을 수립, 공개합니다.
+              </p>
+              <p className="font-bold mb-1">제1조 (개인정보의 처리목적)</p>
+              <p className="mb-2">
+                회사는 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는 개인정보보호법 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.
+              </p>
+              <p className="font-bold mb-1">제2조 (수집하는 개인정보 항목)</p>
+              <p>
+                회사는 견적 상담 서비스 제공을 위해 필요한 최소한의 개인정보를 수집합니다. 수집 항목: 성명, 연락처, 지역, 희망차종 등 상담에 필요한 정보.
+              </p>
+            </div>
+
+            {/* 개인정보활용동의 */}
+            <div className="mb-5">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   name="privacyAgreed"
                   checked={formData.privacyAgreed}
                   onChange={handleInputChange}
-                  className="mt-1"
                 />
-                <span className="text-sm text-text-secondary">
-                  개인정보 수집 및 이용에 동의합니다.{' '}
-                  <a href="#" className="text-primary underline">[보기]</a>
+                <span className="text-sm text-text-primary">
+                  개인정보활용동의(필수)
                 </span>
               </label>
               {errors.privacyAgreed && (
-                <p className="text-sm text-badge-immediate mt-1">{errors.privacyAgreed}</p>
+                <p className="text-xs text-badge-immediate mt-1">{errors.privacyAgreed}</p>
               )}
             </div>
 
@@ -388,7 +384,7 @@ export default function QuoteModal() {
                   : 'bg-primary text-white hover:bg-primary-dark'
               }`}
             >
-              {isSubmitting ? '처리 중...' : '무료 견적 서비스 받기'}
+              {isSubmitting ? '처리 중...' : '실시간 견적 받기'}
             </button>
           </form>
         )}

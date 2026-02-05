@@ -35,7 +35,10 @@ export default function HeroSection() {
           {/* CTA 버튼 */}
           <button
             onClick={() => openModal()}
-            className="px-8 py-4 bg-gradient-to-r from-white via-gray-100 to-white text-primary-dark font-bold rounded-lg hover:from-gray-100 hover:via-white hover:to-gray-100 transition-all text-lg shadow-lg border border-white/50"
+            className="relative overflow-hidden px-8 py-4 bg-white text-primary-dark font-bold rounded-lg text-lg shadow-lg border border-white/50 hover:bg-primary hover:text-white hover:border-primary before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent hover:before:translate-x-full before:transition-transform before:duration-700 before:ease-in-out"
+            style={{
+              transition: 'background-color 0.4s ease 0.25s, color 0.4s ease 0.25s, border-color 0.4s ease 0.25s',
+            }}
           >
             무료 견적 받기
           </button>

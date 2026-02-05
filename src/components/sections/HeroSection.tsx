@@ -1,16 +1,22 @@
 'use client';
 
+import Image from 'next/image';
 import { useQuoteModal } from '@/hooks/useQuoteModal';
 
 export default function HeroSection() {
   const { openModal } = useQuoteModal();
 
   return (
-    <section className="relative bg-gradient-to-br from-[#2d3748] via-[#4a5568] to-[#1a202c] text-white py-20 md:py-32 overflow-hidden">
-      {/* 메탈릭 광택 효과 */}
-      <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/5 to-white/10" />
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-accent/10 rounded-full blur-3xl" />
+    <section className="relative text-white py-20 md:py-32 overflow-hidden">
+      {/* 배경 이미지 */}
+      <Image
+        src="/images/banner.png"
+        alt="배너 배경"
+        fill
+        className="object-cover"
+        priority
+      />
+      <div className="absolute inset-0 bg-black/40" />
 
       <div className="container mx-auto px-4 max-w-5xl relative z-10">
         <div className="max-w-2xl">

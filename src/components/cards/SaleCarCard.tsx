@@ -94,7 +94,7 @@ export default function SaleCarCard({ car, manufacturers }: SaleCarCardProps) {
         {/* CTA 버튼 */}
         <button
           onClick={handleConsultClick}
-          className="w-full py-3 bg-gradient-to-r from-primary via-primary-light to-primary text-white rounded-lg font-medium hover:from-primary-dark hover:via-primary hover:to-primary-dark transition-all shadow-md"
+          className="relative w-full py-3 bg-primary text-white rounded-lg font-medium shadow-md overflow-hidden hover:bg-primary-dark transition-colors duration-300 before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent hover:before:translate-x-full before:transition-transform before:duration-700 before:ease-in-out"
         >
           간편 상담 신청 &gt;
         </button>

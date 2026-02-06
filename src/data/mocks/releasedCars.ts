@@ -7,7 +7,6 @@ export const mockReleasedCars: ReleasedCar[] = [
     thumbnailUrl: '/images/released/bmw-i7.jpg',
     releasedAt: '2026-01-28',
     isVisible: true,
-    sortOrder: 1,
     createdAt: '2026-01-28T00:00:00Z',
   },
   {
@@ -16,7 +15,6 @@ export const mockReleasedCars: ReleasedCar[] = [
     thumbnailUrl: '/images/released/genesis-gv80.jpg',
     releasedAt: '2026-01-25',
     isVisible: true,
-    sortOrder: 2,
     createdAt: '2026-01-25T00:00:00Z',
   },
   {
@@ -25,7 +23,6 @@ export const mockReleasedCars: ReleasedCar[] = [
     thumbnailUrl: '/images/released/mercedes-e300.jpg',
     releasedAt: '2026-01-22',
     isVisible: true,
-    sortOrder: 3,
     createdAt: '2026-01-22T00:00:00Z',
   },
   {
@@ -34,7 +31,6 @@ export const mockReleasedCars: ReleasedCar[] = [
     thumbnailUrl: '/images/released/hyundai-grandeur.jpg',
     releasedAt: '2026-01-20',
     isVisible: true,
-    sortOrder: 4,
     createdAt: '2026-01-20T00:00:00Z',
   },
   {
@@ -43,7 +39,6 @@ export const mockReleasedCars: ReleasedCar[] = [
     thumbnailUrl: '/images/released/kia-ev6.jpg',
     releasedAt: '2026-01-18',
     isVisible: true,
-    sortOrder: 5,
     createdAt: '2026-01-18T00:00:00Z',
   },
   {
@@ -52,7 +47,6 @@ export const mockReleasedCars: ReleasedCar[] = [
     thumbnailUrl: '/images/released/audi-etron.jpg',
     releasedAt: '2026-01-15',
     isVisible: true,
-    sortOrder: 6,
     createdAt: '2026-01-15T00:00:00Z',
   },
   {
@@ -61,7 +55,6 @@ export const mockReleasedCars: ReleasedCar[] = [
     thumbnailUrl: '/images/released/volvo-xc90.jpg',
     releasedAt: '2026-01-12',
     isVisible: true,
-    sortOrder: 7,
     createdAt: '2026-01-12T00:00:00Z',
   },
   {
@@ -70,7 +63,6 @@ export const mockReleasedCars: ReleasedCar[] = [
     thumbnailUrl: '/images/released/lexus-es.jpg',
     releasedAt: '2026-01-10',
     isVisible: true,
-    sortOrder: 8,
     createdAt: '2026-01-10T00:00:00Z',
   },
 ];

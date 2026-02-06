@@ -14,9 +14,6 @@ export interface ReleasedCar {
   /** 노출 여부 */
   isVisible: boolean;
 
-  /** 정렬 순서 (오름차순) */
-  sortOrder: number;
-
   /** 생성일시 (ISO 8601) */
   createdAt: string;
 }

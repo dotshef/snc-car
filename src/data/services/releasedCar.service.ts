@@ -3,15 +3,12 @@ import type { ReleasedCar } from '@/types/releasedCar';
 
 /**
  * 최근 출고 차량 조회 (isVisible=true, 최대 limit개)
- * 정렬: sortOrder ASC, releasedAt DESC, createdAt DESC
+ * 정렬: releasedAt DESC, createdAt DESC
  */
 export async function getReleasedCars(limit: number = 6): Promise<ReleasedCar[]> {
   return mockReleasedCars
     .filter((car) => car.isVisible)
     .sort((a, b) => {
-      if (a.sortOrder !== b.sortOrder) {
-        return a.sortOrder - b.sortOrder;
-      }
       const releasedDiff =
         new Date(b.releasedAt).getTime() - new Date(a.releasedAt).getTime();
       if (releasedDiff !== 0) {

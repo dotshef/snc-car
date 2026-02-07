@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { parseSessionCookie } from '@/lib/auth/session';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const sessionCookie = request.cookies.get('admin-session');
   const hasSession = sessionCookie ? !!parseSessionCookie(sessionCookie.value) : false;
 
@@ -24,8 +24,6 @@ export function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
-
-export const runtime = 'nodejs';
 
 export const config = {
   matcher: ['/admin/:path*'],

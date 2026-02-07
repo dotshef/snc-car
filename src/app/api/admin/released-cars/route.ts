@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
+import { getSessionUser } from '@/lib/auth/session';
+import { getPublicImageUrl } from '@/lib/supabase/storage';
 import { NextResponse } from 'next/server';
 
 const ALLOWED_IMAGE_TYPES = ['image/webp', 'image/png', 'image/jpeg'];
@@ -6,11 +8,11 @@ const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const BUCKET = process.env.SUPABASE_STORAGE_BUCKET || 'public-media';
 
 export async function GET() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getSessionUser();
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from('released_cars')
@@ -21,15 +23,20 @@ export async function GET() {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ data });
+  const transformed = data.map((row: Record<string, unknown>) => ({
+    ...row,
+    thumbnail_path: row.thumbnail_path ? getPublicImageUrl(row.thumbnail_path as string) : null,
+  }));
+
+  return NextResponse.json({ data: transformed });
 }
 
 export async function POST(request: Request) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getSessionUser();
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+  const supabase = createClient();
 
   const formData = await request.formData();
   const carName = formData.get('car_name') as string;
@@ -92,5 +99,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'DB 저장 실패: ' + dbError.message }, { status: 500 });
   }
 
-  return NextResponse.json({ data: inserted }, { status: 201 });
+  const transformed = {
+    ...inserted,
+    thumbnail_path: inserted.thumbnail_path ? getPublicImageUrl(inserted.thumbnail_path) : null,
+  };
+
+  return NextResponse.json({ data: transformed }, { status: 201 });
 }

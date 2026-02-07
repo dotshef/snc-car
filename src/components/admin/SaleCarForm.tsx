@@ -1,9 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
 import ImageUpload from './ImageUpload';
-import { getPublicImageUrl } from '@/lib/supabase/storage';
 import type { ManufacturerRow, SaleCarRow } from '@/types/admin';
 
 const BADGE_OPTIONS = ['즉시출고', '프로모션'];
@@ -29,14 +27,12 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase
-      .from('manufacturers')
-      .select('*')
-      .order('sort_order', { ascending: true })
-      .then(({ data }) => {
-        if (data) setManufacturers(data);
-      });
+    fetch('/api/admin/manufacturers')
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.data) setManufacturers(result.data);
+      })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -215,7 +211,7 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
 
       <ImageUpload
         onChange={setThumbnailFile}
-        currentImageUrl={saleCar?.thumbnail_path ? getPublicImageUrl(saleCar.thumbnail_path) : null}
+        currentImageUrl={saleCar?.thumbnail_path ?? null}
         accept=".webp,.png,.jpg,.jpeg"
         label="썸네일 이미지"
       />

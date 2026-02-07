@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import AdminTabs, { type AdminTab } from '@/components/admin/AdminTabs';
 import ManufacturerList from '@/components/admin/ManufacturerList';
 import ManufacturerForm from '@/components/admin/ManufacturerForm';
@@ -13,6 +14,7 @@ import type { ManufacturerRow, SaleCarRow, ReleasedCarRow } from '@/types/admin'
 type ViewMode = 'list' | 'create' | 'edit';
 
 export default function AdminDashboardPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<AdminTab>('manufacturers');
 
   // Manufacturer state
@@ -83,9 +85,21 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-text-primary">S&C Admin</h1>
-        <p className="text-sm text-text-secondary mt-1">콘텐츠 관리 시스템</p>
+      <div className="mb-6 flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-text-primary">S&C Admin</h1>
+          <p className="text-sm text-text-secondary mt-1">콘텐츠 관리 시스템</p>
+        </div>
+        <button
+          onClick={async () => {
+            await fetch('/api/admin/auth/logout', { method: 'POST' });
+            router.push('/admin/login');
+            router.refresh();
+          }}
+          className="px-4 py-2 text-sm text-text-secondary border border-border rounded-lg hover:bg-bg-secondary transition-colors"
+        >
+          로그아웃
+        </button>
       </div>
 
       <div className="bg-bg-card rounded-xl shadow-sm">

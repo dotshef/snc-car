@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import ImageUpload from './ImageUpload';
-import { getPublicImageUrl } from '@/lib/supabase/storage';
 import type { ReleasedCarRow } from '@/types/admin';
 
 interface ReleasedCarFormProps {
@@ -113,7 +112,7 @@ export default function ReleasedCarForm({ releasedCar, onSuccess, onCancel }: Re
 
       <ImageUpload
         onChange={setThumbnailFile}
-        currentImageUrl={releasedCar?.thumbnail_path ? getPublicImageUrl(releasedCar.thumbnail_path) : null}
+        currentImageUrl={releasedCar?.thumbnail_path ?? null}
         accept=".webp,.png,.jpg,.jpeg"
         label="썸네일 이미지"
       />

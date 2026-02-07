@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
+import { getSessionUser } from '@/lib/auth/session';
+import { getPublicImageUrl } from '@/lib/supabase/storage';
 import { NextResponse } from 'next/server';
 
 const ALLOWED_IMAGE_TYPES = ['image/webp', 'image/png', 'image/jpeg'];
@@ -9,11 +11,11 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getSessionUser();
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+  const supabase = createClient();
 
   const { id } = await params;
   const saleCarId = parseInt(id, 10);
@@ -104,18 +106,23 @@ export async function PUT(
     return NextResponse.json({ error: 'DB 수정 실패: ' + dbError.message }, { status: 500 });
   }
 
-  return NextResponse.json({ data: updated });
+  const transformed = {
+    ...updated,
+    thumbnail_path: updated.thumbnail_path ? getPublicImageUrl(updated.thumbnail_path) : null,
+  };
+
+  return NextResponse.json({ data: transformed });
 }
 
 export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getSessionUser();
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+  const supabase = createClient();
 
   const { id } = await params;
   const saleCarId = parseInt(id, 10);

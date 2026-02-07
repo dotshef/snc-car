@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
+import { getSessionUser } from '@/lib/auth/session';
+import { getPublicImageUrl } from '@/lib/supabase/storage';
 import { NextResponse } from 'next/server';
 
 const ALLOWED_IMAGE_TYPES = ['image/svg+xml', 'image/webp', 'image/png', 'image/jpeg'];
@@ -9,11 +11,11 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getSessionUser();
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+  const supabase = createClient();
 
   const { id } = await params;
   const manufacturerId = parseInt(id, 10);
@@ -116,5 +118,10 @@ export async function PUT(
     return NextResponse.json({ error: 'DB 수정 실패: ' + dbError.message }, { status: 500 });
   }
 
-  return NextResponse.json({ data: updated });
+  const transformed = {
+    ...updated,
+    logo_path: updated.logo_path ? getPublicImageUrl(updated.logo_path) : null,
+  };
+
+  return NextResponse.json({ data: transformed });
 }

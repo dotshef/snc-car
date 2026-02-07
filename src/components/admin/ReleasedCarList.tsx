@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
-import { getPublicImageUrl } from '@/lib/supabase/storage';
 import DeleteConfirmModal from './DeleteConfirmModal';
 import type { ReleasedCarRow } from '@/types/admin';
 
@@ -21,14 +19,14 @@ export default function ReleasedCarList({ onEdit, onDeleted, refreshKey }: Relea
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from('released_cars')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (!error && data) {
-        setReleasedCars(data);
+      try {
+        const res = await fetch('/api/admin/released-cars');
+        const result = await res.json();
+        if (res.ok && result.data) {
+          setReleasedCars(result.data);
+        }
+      } catch {
+        // ignore
       }
       setLoading(false);
     };
@@ -77,7 +75,7 @@ export default function ReleasedCarList({ onEdit, onDeleted, refreshKey }: Relea
                 <td className="py-3 px-4">
                   {car.thumbnail_path ? (
                     <img
-                      src={getPublicImageUrl(car.thumbnail_path)}
+                      src={car.thumbnail_path}
                       alt={car.car_name}
                       className="w-16 h-12 object-cover rounded"
                     />

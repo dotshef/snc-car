@@ -1,4 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
+import { getSessionUser } from '@/lib/auth/session';
+import { getPublicImageUrl } from '@/lib/supabase/storage';
 import { NextResponse } from 'next/server';
 
 const ALLOWED_IMAGE_TYPES = ['image/svg+xml', 'image/webp', 'image/png', 'image/jpeg'];
@@ -6,11 +8,11 @@ const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 const BUCKET = process.env.SUPABASE_STORAGE_BUCKET || 'public-media';
 
 export async function GET() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getSessionUser();
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from('manufacturers')
@@ -21,15 +23,20 @@ export async function GET() {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json({ data });
+  const transformed = data.map((row: Record<string, unknown>) => ({
+    ...row,
+    logo_path: row.logo_path ? getPublicImageUrl(row.logo_path as string) : null,
+  }));
+
+  return NextResponse.json({ data: transformed });
 }
 
 export async function POST(request: Request) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getSessionUser();
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+  const supabase = createClient();
 
   const formData = await request.formData();
   const code = formData.get('code') as string;
@@ -111,5 +118,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'DB 저장 실패: ' + dbError.message }, { status: 500 });
   }
 
-  return NextResponse.json({ data: inserted }, { status: 201 });
+  const transformed = {
+    ...inserted,
+    logo_path: inserted.logo_path ? getPublicImageUrl(inserted.logo_path) : null,
+  };
+
+  return NextResponse.json({ data: transformed }, { status: 201 });
 }

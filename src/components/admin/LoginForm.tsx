@@ -2,11 +2,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
 
 export default function LoginForm() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -16,36 +15,43 @@ export default function LoginForm() {
     setError(null);
     setLoading(true);
 
-    const supabase = createClient();
-    const { error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const res = await fetch('/api/admin/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
 
-    if (authError) {
-      setError('이메일 또는 비밀번호가 올바르지 않습니다.');
+      const result = await res.json();
+
+      if (!res.ok) {
+        setError(result.error || '로그인에 실패했습니다');
+        setLoading(false);
+        return;
+      }
+
+      router.push('/admin');
+      router.refresh();
+    } catch {
+      setError('네트워크 오류가 발생했습니다');
       setLoading(false);
-      return;
     }
-
-    router.push('/admin');
-    router.refresh();
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-text-primary mb-1">
-          이메일
+        <label htmlFor="username" className="block text-sm font-medium text-text-primary mb-1">
+          아이디
         </label>
         <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          id="username"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
           className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
-          placeholder="admin@example.com"
+          placeholder="admin"
         />
       </div>
       <div>

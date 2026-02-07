@@ -33,3 +33,11 @@ export interface ReleasedCarRow {
   created_at: string;
   updated_at: string;
 }
+
+export interface UserRow {
+  id: number;
+  username: string;
+  nickname: string;
+  created_at: string;
+  updated_at: string;
+}

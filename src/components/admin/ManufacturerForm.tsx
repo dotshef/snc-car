@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import ImageUpload from './ImageUpload';
-import { getPublicImageUrl } from '@/lib/supabase/storage';
 import type { ManufacturerRow } from '@/types/admin';
 
 interface ManufacturerFormProps {
@@ -143,7 +142,7 @@ export default function ManufacturerForm({ manufacturer, onSuccess, onCancel }: 
 
       <ImageUpload
         onChange={setLogoFile}
-        currentImageUrl={manufacturer?.logo_path ? getPublicImageUrl(manufacturer.logo_path) : null}
+        currentImageUrl={manufacturer?.logo_path ?? null}
         label="로고 이미지"
       />
 

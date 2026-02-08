@@ -38,8 +38,7 @@ export default function SaleCarCard({ car, manufacturers }: SaleCarCardProps) {
       {/* 차량 이미지 */}
       <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100">
         <div className="absolute inset-0 flex items-center justify-center text-text-muted group-hover:scale-105 transition-transform duration-300">
-          {/* 플레이스홀더 - 실제 이미지로 교체 */}
-          <span className="text-sm">{car.name}</span>
+          {/* TODO 썸네일 이미지 주입 */}
         </div>
 
         {/* 뱃지 */}
@@ -62,9 +61,7 @@ export default function SaleCarCard({ car, manufacturers }: SaleCarCardProps) {
         {/* 제조사 로고/이름 */}
         <div className="flex items-center gap-2 mb-2">
           <div className="w-6 h-6 bg-bg-secondary rounded-full flex items-center justify-center">
-            <span className="text-[10px] font-bold text-text-secondary">
-              {manufacturerName.slice(0, 2)}
-            </span>
+            {/* TODO 제조사 로고 주입 */}
           </div>
           <span className="text-sm text-text-secondary">{manufacturerName}</span>
         </div>

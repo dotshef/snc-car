@@ -1,15 +1,13 @@
 'use client';
 
 import { SaleCarBadge, type SaleCar } from '@/types/saleCar';
-import type { Manufacturer } from '@/types/manufacturer';
 import { useQuoteModal } from '@/hooks/useQuoteModal';
 
 interface SaleCarCardProps {
   car: SaleCar;
-  manufacturers: Manufacturer[];
 }
 
-function getBadgeColor(badge: SaleCarBadge): string {
+function getBadgeColor(badge: string): string {
   switch (badge) {
     case SaleCarBadge.IMMEDIATE:
       return 'bg-badge-immediate';
@@ -20,11 +18,10 @@ function getBadgeColor(badge: SaleCarBadge): string {
   }
 }
 
-export default function SaleCarCard({ car, manufacturers }: SaleCarCardProps) {
+export default function SaleCarCard({ car }: SaleCarCardProps) {
   const { openModal } = useQuoteModal();
 
-  const manufacturer = manufacturers.find((m) => m.id === car.manufacturerId);
-  const manufacturerName = manufacturer?.name ?? '';
+  const manufacturerName = car.manufacturer?.name ?? '';
 
   const handleConsultClick = () => {
     openModal({
@@ -38,7 +35,13 @@ export default function SaleCarCard({ car, manufacturers }: SaleCarCardProps) {
       {/* 차량 이미지 */}
       <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100">
         <div className="absolute inset-0 flex items-center justify-center text-text-muted group-hover:scale-105 transition-transform duration-300">
-          {/* TODO 썸네일 이미지 주입 */}
+          {car.thumbnail_url ? (
+            <img
+              src={car.thumbnail_url}
+              alt={car.name}
+              className="w-full h-full object-cover"
+            />
+          ) : null}
         </div>
 
         {/* 뱃지 */}
@@ -58,11 +61,8 @@ export default function SaleCarCard({ car, manufacturers }: SaleCarCardProps) {
 
       {/* 차량 정보 */}
       <div className="p-4">
-        {/* 제조사 로고/이름 */}
+        {/* 제조사 이름 */}
         <div className="flex items-center gap-2 mb-2">
-          <div className="w-6 h-6 bg-bg-secondary rounded-full flex items-center justify-center">
-            {/* TODO 제조사 로고 주입 */}
-          </div>
           <span className="text-sm text-text-secondary">{manufacturerName}</span>
         </div>
 
@@ -70,20 +70,22 @@ export default function SaleCarCard({ car, manufacturers }: SaleCarCardProps) {
         <h3 className="text-lg font-bold text-text-primary mb-1">{car.name}</h3>
 
         {/* 차량 설명 */}
-        <p className="text-xs text-text-secondary mb-3 line-clamp-2">{car.description}</p>
+        {car.description && (
+          <p className="text-xs text-text-secondary mb-3 line-clamp-2">{car.description}</p>
+        )}
 
         {/* 가격 정보 */}
         <div className="space-y-1 mb-4">
           <p className="text-sm">
             <span className="text-text-secondary">렌트</span>{' '}
             <span className="font-semibold text-text-primary">
-              {car.rentPrice !== null ? `${car.rentPrice.toLocaleString()}원` : '비용문의'}
+              {car.rent_price !== null ? `${car.rent_price.toLocaleString()}원` : '비용문의'}
             </span>
           </p>
           <p className="text-sm">
             <span className="text-text-secondary">리스</span>{' '}
             <span className="font-semibold text-text-primary">
-              {car.leasePrice !== null ? `${car.leasePrice.toLocaleString()}원` : '비용문의'}
+              {car.lease_price !== null ? `${car.lease_price.toLocaleString()}원` : '비용문의'}
             </span>
           </p>
         </div>

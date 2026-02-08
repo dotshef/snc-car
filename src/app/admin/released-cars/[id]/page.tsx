@@ -101,8 +101,8 @@ export default function ReleasedCarDetailPage() {
             <p className="text-text-primary">{item.released_at}</p>
           </div>
           <div>
-            <label className="block text-sm text-text-secondary mb-1">노출여부</label>
-            <p className="text-text-primary">{item.is_visible ? '노출' : '비노출'}</p>
+            <label className="block text-sm text-text-secondary mb-1">메인페이지 노출여부</label>
+            <p className="text-text-primary">{item.is_visible ? '노출' : '숨김'}</p>
           </div>
           <div>
             <label className="block text-sm text-text-secondary mb-1">작성일</label>

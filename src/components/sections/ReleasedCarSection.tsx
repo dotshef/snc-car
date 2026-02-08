@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import ReleasedCarCard from '@/components/cards/ReleasedCarCard';
-import { getReleasedCars } from '@/data/services/releasedCar.service';
 import type { ReleasedCar } from '@/types/releasedCar';
 
 export default function ReleasedCarSection() {
@@ -12,8 +11,9 @@ export default function ReleasedCarSection() {
   useEffect(() => {
     async function loadData() {
       try {
-        const data = await getReleasedCars(6);
-        setCars(data);
+        const res = await fetch('/api/public/released-cars');
+        const json = await res.json();
+        setCars(json.data ?? []);
       } catch (error) {
         console.error('Failed to load released cars:', error);
       } finally {
@@ -61,7 +61,7 @@ export default function ReleasedCarSection() {
         {/* 출고 차량 그리드 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {cars.map((car) => (
-            <ReleasedCarCard key={car.id} car={car} />
+            <ReleasedCarCard key={car.released_car_id} car={car} />
           ))}
         </div>
       </div>

@@ -5,8 +5,8 @@ import type { Manufacturer } from '@/types/manufacturer';
 
 interface ManufacturerFilterProps {
   manufacturers: Manufacturer[];
-  selectedCode: string | null;
-  onSelect: (code: string | null) => void;
+  selectedCode: number | null;
+  onSelect: (id: number | null) => void;
 }
 
 export default function ManufacturerFilter({
@@ -26,11 +26,11 @@ export default function ManufacturerFilter({
     }
   };
 
-  const handleSelect = (code: string) => {
-    if (selectedCode === code) {
+  const handleSelect = (id: number) => {
+    if (selectedCode === id) {
       onSelect(null); // 선택 해제
     } else {
-      onSelect(code);
+      onSelect(id);
     }
   };
 
@@ -61,16 +61,24 @@ export default function ManufacturerFilter({
       >
         {manufacturers.map((manufacturer) => (
           <button
-            key={manufacturer.id}
-            onClick={() => handleSelect(manufacturer.id)}
+            key={manufacturer.manufacturer_id}
+            onClick={() => handleSelect(manufacturer.manufacturer_id)}
             className={`flex-shrink-0 flex flex-col items-center justify-center w-24 h-20 rounded-lg border-2 transition-all ${
-              selectedCode === manufacturer.id
+              selectedCode === manufacturer.manufacturer_id
                 ? 'border-primary bg-primary/5'
                 : 'border-border bg-white hover:border-secondary'
             }`}
           >
             <div className="w-12 h-10 flex items-center justify-center mb-1">
-                {/* TODO 여기에 로고 이미지 렌더링 */}
+              {manufacturer.logo_url ? (
+                <img
+                  src={manufacturer.logo_url}
+                  alt={manufacturer.name}
+                  className="max-w-full max-h-full object-contain"
+                />
+              ) : (
+                <span className="text-xs text-text-muted">{manufacturer.code}</span>
+              )}
             </div>
             <span className="text-xs text-text-secondary">{manufacturer.name}</span>
           </button>

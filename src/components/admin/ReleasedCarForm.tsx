@@ -87,7 +87,7 @@ export default function ReleasedCarForm({ releasedCar, onSuccess, onCancel }: Re
             disabled={loading}
             className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 text-sm font-medium"
           >
-            {loading ? '저장 중...' : isEdit ? '수정' : '등록'}
+            {loading ? '저장 중...' : isEdit ? '저장' : '등록'}
           </button>
           <button
             type="button"

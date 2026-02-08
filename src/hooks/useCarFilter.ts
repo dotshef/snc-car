@@ -8,7 +8,7 @@ export type CategoryFilter = 'ALL' | ManufacturerCategory;
 
 export function useCarFilter(manufacturers: Manufacturer[], cars: SaleCar[]) {
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>('ALL');
-  const [selectedManufacturer, setSelectedManufacturer] = useState<string | null>(null);
+  const [selectedManufacturer, setSelectedManufacturer] = useState<number | null>(null);
 
   const filteredManufacturers = useMemo(() => {
     if (categoryFilter === 'ALL') {
@@ -22,13 +22,13 @@ export function useCarFilter(manufacturers: Manufacturer[], cars: SaleCar[]) {
 
     // 카테고리 필터 적용
     if (categoryFilter !== 'ALL') {
-      const validIds = filteredManufacturers.map((m) => m.id);
-      result = result.filter((car) => validIds.includes(car.manufacturerId));
+      const validIds = filteredManufacturers.map((m) => m.manufacturer_id);
+      result = result.filter((car) => validIds.includes(car.manufacturer_id));
     }
 
     // 제조사 필터 적용
     if (selectedManufacturer) {
-      result = result.filter((car) => car.manufacturerId === selectedManufacturer);
+      result = result.filter((car) => car.manufacturer_id === selectedManufacturer);
     }
 
     return result;
@@ -40,7 +40,7 @@ export function useCarFilter(manufacturers: Manufacturer[], cars: SaleCar[]) {
     setSelectedManufacturer(null);
   };
 
-  const handleManufacturerChange = (id: string | null) => {
+  const handleManufacturerChange = (id: number | null) => {
     setSelectedManufacturer(id);
   };
 

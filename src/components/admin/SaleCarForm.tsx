@@ -126,7 +126,7 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
             disabled={loading}
             className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 text-sm font-medium"
           >
-            {loading ? '저장 중...' : isEdit ? '수정' : '등록'}
+            {loading ? '저장 중...' : isEdit ? '저장' : '등록'}
           </button>
           <button
             type="button"
@@ -162,7 +162,7 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            placeholder="아반떼 CN7"
+            placeholder="예: 아반떼"
             className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
           />
         </div>
@@ -196,7 +196,7 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
-          placeholder="차량 설명을 입력하세요"
+          placeholder="차량 상세 스펙을 입력하세요"
           className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm resize-y"
         />
       </div>

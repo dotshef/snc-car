@@ -6,8 +6,6 @@ import CategoryTabs from '@/components/filters/CategoryTabs';
 import ManufacturerFilter from '@/components/filters/ManufacturerFilter';
 import SearchInput from '@/components/filters/SearchInput';
 import SaleCarCard from '@/components/cards/SaleCarCard';
-import { getManufacturers } from '@/data/services/manufacturer.service';
-import { getSaleCars } from '@/data/services/saleCar.service';
 import type { Manufacturer } from '@/types/manufacturer';
 import type { SaleCar } from '@/types/saleCar';
 
@@ -28,12 +26,13 @@ export default function SaleCarSection() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [manufacturersData, carsData] = await Promise.all([
-          getManufacturers(),
-          getSaleCars(),
+        const [mfRes, carsRes] = await Promise.all([
+          fetch('/api/public/manufacturers'),
+          fetch('/api/public/sale-cars'),
         ]);
-        setManufacturers(manufacturersData);
-        setCars(carsData);
+        const [mfJson, carsJson] = await Promise.all([mfRes.json(), carsRes.json()]);
+        setManufacturers(mfJson.data ?? []);
+        setCars(carsJson.data ?? []);
       } catch (error) {
         console.error('Failed to load data:', error);
       } finally {
@@ -83,7 +82,7 @@ export default function SaleCarSection() {
         {filteredCars.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCars.slice(0, 12).map((car) => (
-              <SaleCarCard key={car.id} car={car} manufacturers={manufacturers} />
+              <SaleCarCard key={car.sale_car_id} car={car} />
             ))}
           </div>
         ) : (

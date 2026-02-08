@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
-  <rect width="400" height="300" fill="#f1f5f9"/>
-  <g fill="#94a3b8">
-    <path d="M280 180h-160c-5.5 0-10-4.5-10-10v-50c0-5.5 4.5-10 10-10h20l15-30h90l15 30h20c5.5 0 10 4.5 10 10v50c0 5.5-4.5 10-10 10z"/>
-    <circle cx="150" cy="180" r="20"/>
-    <circle cx="250" cy="180" r="20"/>
-  </g>
-  <text x="200" y="230" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="14">이미지 준비 중</text>
-</svg>

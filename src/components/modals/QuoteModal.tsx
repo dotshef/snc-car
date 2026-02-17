@@ -144,7 +144,7 @@ export default function QuoteModal() {
 
       setIsSubmitted(true);
     } catch (error) {
-      console.error('Submit error:', error);
+      console.error('[QuoteModal] Submit error:', error);
       setErrors({ submit: '제출 중 오류가 발생했습니다. 다시 시도해주세요.' });
     } finally {
       setIsSubmitting(false);

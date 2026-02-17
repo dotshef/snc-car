@@ -45,7 +45,7 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
         }
         setCars(filteredCars);
       } catch (error) {
-        console.error('Failed to load data:', error);
+        console.error('[SaleCarSection] Failed to load sale cars:', error);
       } finally {
         setIsLoading(false);
       }

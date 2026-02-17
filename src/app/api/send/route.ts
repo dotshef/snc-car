@@ -7,7 +7,7 @@ import type { DisposalRequest } from '@/types/disposal';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM = 'SNC 오토 <no-reply@dotshef.com>'; // TODO 고객 도메인으로 변경
-const TO = ['contact@dotshef.com']; // TODO 고객 이메일로 변경 필요
+const TO = ['wjdtjddn37@naver.com'];
 
 type SendRequestBody =
   | { type: 'quote'; data: QuoteRequest }
@@ -16,7 +16,6 @@ type SendRequestBody =
 export async function POST(request: Request) {
   try {
     const body: SendRequestBody = await request.json();
-    console.log('[send] type:', body.type, 'name:', body.data?.name);
 
     let subject: string;
     let reactElement: React.ReactElement;
@@ -32,8 +31,6 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Invalid type' }, { status: 400 });
     }
 
-    console.log('[send] Sending email:', { from: FROM, to: TO, subject });
-
     const { data, error } = await resend.emails.send({
       from: FROM,
       to: TO,
@@ -46,7 +43,6 @@ export async function POST(request: Request) {
       return Response.json({ error }, { status: 500 });
     }
 
-    console.log('[send] Success:', data);
     return Response.json(data);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

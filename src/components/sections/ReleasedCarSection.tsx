@@ -15,7 +15,7 @@ export default function ReleasedCarSection() {
         const json = await res.json();
         setCars(json.data ?? []);
       } catch (error) {
-        console.error('Failed to load released cars:', error);
+        console.error('[ReleasedCarSection] Failed to load released cars:', error);
       } finally {
         setIsLoading(false);
       }

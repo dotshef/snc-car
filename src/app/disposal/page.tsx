@@ -67,17 +67,23 @@ export default function DisposalPage() {
     setIsSubmitting(true);
 
     try {
-      // MVP: console.log 출력
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      console.log('Disposal consultation submission:', {
-        name: formData.name,
-        phone: normalizePhoneNumber(formData.phone),
-        currentVehicle: formData.currentVehicle || undefined,
-        desiredCar: formData.desiredCar || undefined,
-        privacyAgreed: formData.privacyAgreed,
-        submittedAt: new Date().toISOString(),
+      const res = await fetch('/api/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'disposal',
+          data: {
+            name: formData.name,
+            phone: normalizePhoneNumber(formData.phone),
+            currentVehicle: formData.currentVehicle || undefined,
+            desiredCar: formData.desiredCar || undefined,
+            privacyAgreed: formData.privacyAgreed,
+            submittedAt: new Date().toISOString(),
+          },
+        }),
       });
+
+      if (!res.ok) throw new Error('Send failed');
 
       setIsSubmitted(true);
     } catch (error) {

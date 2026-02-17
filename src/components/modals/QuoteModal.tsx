@@ -2,7 +2,6 @@
 
 import { useState, useEffect, type FormEvent } from 'react';
 import { useQuoteModal } from '@/hooks/useQuoteModal';
-import { submitQuoteRequest } from '@/data/services/quote.service';
 import { normalizePhoneNumber, validatePhoneNumber, validateName } from '@/utils/validators';
 import type {
   CustomerType,
@@ -130,13 +129,20 @@ export default function QuoteModal() {
         contractPeriod: formData.contractPeriod,
         selectedCarName: formData.desiredCar || undefined,
         privacyAgreed: formData.privacyAgreed,
+        submittedAt: new Date().toISOString(),
       };
 
-      const result = await submitQuoteRequest(request);
+      const res = await fetch('/api/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'quote', data: request }),
+      });
 
-      if (result.success) {
-        setIsSubmitted(true);
+      if (!res.ok) {
+        throw new Error(`Send failed: ${res.status}`);
       }
+
+      setIsSubmitted(true);
     } catch (error) {
       console.error('Submit error:', error);
       setErrors({ submit: '제출 중 오류가 발생했습니다. 다시 시도해주세요.' });

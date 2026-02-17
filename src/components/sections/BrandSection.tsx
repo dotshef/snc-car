@@ -30,7 +30,7 @@ export default function BrandSection() {
               STEAD &middot; 꾸준함, 변하지 않는 기준 &nbsp;|&nbsp; &CO &middot; 동반자로 함께 간다
             </p>
 
-            <div className="space-y-4 text-base text-text-secondary font-semibold leading-relaxed text-left">
+            <div className="space-y-4 text-sm md:text-base text-text-secondary font-semibold leading-relaxed text-center md:text-left">
               <p>
                 저희 <span className="text-accent">S&C 신차장기렌트리스</span>는
                 변하지 않는 기준으로 함께 간다는 뜻입니다.

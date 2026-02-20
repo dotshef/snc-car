@@ -19,7 +19,7 @@ export async function GET() {
   const transformed = (data ?? []).map((row) => ({
     released_car_id: row.released_car_id,
     car_name: row.car_name,
-    thumbnail_url: row.thumbnail_path ? getPublicImageUrl(row.thumbnail_path) : null,
+    thumbnail_url: getPublicImageUrl(row.thumbnail_path),
     released_at: row.released_at,
   }));
 

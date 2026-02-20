@@ -2,7 +2,7 @@ export interface ManufacturerRow {
   manufacturer_id: number;
   code: string;
   name: string;
-  logo_path: string | null;
+  logo_path: string;
   category: 'DOMESTIC' | 'IMPORT';
   sort_order: number;
   is_visible: boolean;
@@ -15,7 +15,7 @@ export interface SaleCarRow {
   manufacturer_id: number;
   name: string;
   description: string | null;
-  thumbnail_path: string | null;
+  thumbnail_path: string;
   rent_price: number | null;
   lease_price: number | null;
   immediate: boolean;
@@ -27,7 +27,7 @@ export interface SaleCarRow {
 export interface ReleasedCarRow {
   released_car_id: number;
   car_name: string;
-  thumbnail_path: string | null;
+  thumbnail_path: string;
   released_at: string;
   is_visible: boolean;
   created_at: string;

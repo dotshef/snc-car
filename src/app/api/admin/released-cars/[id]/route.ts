@@ -32,7 +32,7 @@ export async function GET(
 
   const transformed = {
     ...data,
-    thumbnail_path: data.thumbnail_path ? getPublicImageUrl(data.thumbnail_path) : null,
+    thumbnail_path: getPublicImageUrl(data.thumbnail_path),
   };
 
   return NextResponse.json({ data: transformed });
@@ -126,7 +126,7 @@ export async function PUT(
 
   const transformed = {
     ...updated,
-    thumbnail_path: updated.thumbnail_path ? getPublicImageUrl(updated.thumbnail_path) : null,
+    thumbnail_path: getPublicImageUrl(updated.thumbnail_path),
   };
 
   return NextResponse.json({ data: transformed });

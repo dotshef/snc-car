@@ -32,7 +32,7 @@ export async function GET(
 
   const transformed = {
     ...data,
-    logo_path: data.logo_path ? getPublicImageUrl(data.logo_path) : null,
+    logo_path: getPublicImageUrl(data.logo_path),
   };
 
   return NextResponse.json({ data: transformed });
@@ -145,7 +145,7 @@ export async function PUT(
 
   const transformed = {
     ...updated,
-    logo_path: updated.logo_path ? getPublicImageUrl(updated.logo_path) : null,
+    logo_path: getPublicImageUrl(updated.logo_path),
   };
 
   return NextResponse.json({ data: transformed });

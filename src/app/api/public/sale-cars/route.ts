@@ -22,7 +22,7 @@ export async function GET() {
       manufacturer_id: row.manufacturer_id,
       name: row.name,
       description: row.description,
-      thumbnail_url: row.thumbnail_path ? getPublicImageUrl(row.thumbnail_path) : null,
+      thumbnail_url: getPublicImageUrl(row.thumbnail_path),
       rent_price: row.rent_price,
       lease_price: row.lease_price,
       immediate: row.immediate ?? false,

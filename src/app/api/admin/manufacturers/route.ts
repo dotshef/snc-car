@@ -33,7 +33,7 @@ export async function GET(request: Request) {
   const total = count ?? 0;
   const transformed = (data ?? []).map((row: Record<string, unknown>) => ({
     ...row,
-    logo_path: row.logo_path ? getPublicImageUrl(row.logo_path as string) : null,
+    logo_path: getPublicImageUrl(row.logo_path as string),
   }));
 
   return NextResponse.json({
@@ -137,7 +137,7 @@ export async function POST(request: Request) {
 
   const transformed = {
     ...inserted,
-    logo_path: inserted.logo_path ? getPublicImageUrl(inserted.logo_path) : null,
+    logo_path: getPublicImageUrl(inserted.logo_path),
   };
 
   return NextResponse.json({ data: transformed }, { status: 201 });

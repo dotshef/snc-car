@@ -19,7 +19,7 @@ export async function GET() {
     manufacturer_id: row.manufacturer_id,
     code: row.code,
     name: row.name,
-    logo_url: row.logo_path ? getPublicImageUrl(row.logo_path) : null,
+    logo_url: getPublicImageUrl(row.logo_path),
     category: row.category,
     sort_order: row.sort_order,
   }));

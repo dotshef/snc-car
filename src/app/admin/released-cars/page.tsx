@@ -44,6 +44,7 @@ export default function ReleasedCarsListPage() {
     <div className="max-w-5xl mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-text-primary">출고차량 관리</h1>
+        <span>최대 12개까지만 메인페이지에 노출됩니다.</span>
         <button
           onClick={() => router.push('/admin/released-cars/new')}
           className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm font-medium"

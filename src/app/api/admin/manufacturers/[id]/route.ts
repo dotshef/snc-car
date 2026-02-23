@@ -73,6 +73,9 @@ export async function PUT(
   if (!code || !code.trim()) {
     return NextResponse.json({ error: 'code는 필수입니다' }, { status: 400 });
   }
+  if (!/^[a-z]+$/.test(code.trim())) {
+    return NextResponse.json({ error: 'code는 영문 소문자만 입력 가능합니다' }, { status: 400 });
+  }
   if (!name || !name.trim()) {
     return NextResponse.json({ error: 'name은 필수입니다' }, { status: 400 });
   }

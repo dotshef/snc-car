@@ -98,7 +98,7 @@ export default function ManufacturerForm({ manufacturer, onSuccess, onCancel }: 
           <input
             type="text"
             value={code}
-            onChange={(e) => setCode(e.target.value)}
+            onChange={(e) => setCode(e.target.value.replace(/[^a-z]/g, ''))}
             required
             placeholder="hyundai"
             className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"

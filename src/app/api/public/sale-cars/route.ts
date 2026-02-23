@@ -9,7 +9,8 @@ export async function GET() {
     .from('sale_cars')
     .select('sale_car_id, manufacturer_id, name, description, thumbnail_path, rent_price, lease_price, immediate, manufacturers!inner(manufacturer_id, name, category, is_visible)')
     .eq('is_visible', true)
-    .eq('manufacturers.is_visible', true);
+    .eq('manufacturers.is_visible', true)
+    .order('updated_at', { ascending: false });
 
   if (error) {
     return NextResponse.json({ error: 'Failed to fetch sale cars' }, { status: 500 });

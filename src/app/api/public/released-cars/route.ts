@@ -9,8 +9,8 @@ export async function GET() {
     .from('released_cars')
     .select('released_car_id, car_name, thumbnail_path, released_at')
     .eq('is_visible', true)
-    .order('released_at', { ascending: false })
-    .limit(6);
+    .order('created_at', { ascending: false })
+    .limit(12);
 
   if (error) {
     return NextResponse.json({ error: 'Failed to fetch released cars' }, { status: 500 });

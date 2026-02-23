@@ -95,8 +95,9 @@ export default function DisposalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-bg-secondary flex items-center justify-center px-4 py-12">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl">
+    <div className="relative min-h-screen bg-[url('/images/car-exhibition.jpg')] bg-cover bg-center flex items-center justify-center px-4 py-12">
+      <div className="absolute inset-0 bg-black/30" />
+      <div className="relative z-10 bg-white rounded-lg shadow-xl w-full max-w-2xl">
         {/* 헤딩 */}
         <div className="pt-8 pb-4 px-6 text-center">
           <h1 className="text-2xl font-bold text-text-primary mb-4">

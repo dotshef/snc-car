@@ -17,8 +17,7 @@ export default function AdminHeader() {
 
   const handleLogout = async () => {
     await fetch('/api/admin/auth/logout', { method: 'POST' });
-    router.push('/admin/login');
-    router.refresh();
+    router.replace('/');
   };
 
   return (

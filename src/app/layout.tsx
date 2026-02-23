@@ -4,6 +4,7 @@ import "./globals.css";
 import { QuoteModalProvider } from "@/hooks/useQuoteModal";
 import QuoteModal from "@/components/modals/QuoteModal";
 import ConditionalLayout from "@/components/layout/ConditionalLayout";
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
           </ConditionalLayout>
           <QuoteModal />
         </QuoteModalProvider>
+        <Analytics />
       </body>
     </html>
   );

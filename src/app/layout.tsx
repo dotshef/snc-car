@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { QuoteModalProvider } from "@/hooks/useQuoteModal";
-import QuoteModal from "@/components/modals/QuoteModal";
 import ConditionalLayout from "@/components/layout/ConditionalLayout";
+import QuickQuoteWidget from "@/components/layout/QuickQuoteWidget";
 import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
@@ -31,12 +30,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QuoteModalProvider>
-          <ConditionalLayout>
-            {children}
-          </ConditionalLayout>
-          <QuoteModal />
-        </QuoteModalProvider>
+        <ConditionalLayout>
+          {children}
+        </ConditionalLayout>
+        <QuickQuoteWidget />
         <Analytics />
       </body>
     </html>

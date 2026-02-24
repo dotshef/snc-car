@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect, useCallback } from 'react';
-import { useQuoteModal } from '@/hooks/useQuoteModal';
 
 const banners = [
   {
@@ -43,7 +42,6 @@ const banners = [
 ];
 
 export default function HeroSection() {
-  const { openModal } = useQuoteModal();
   const router = useRouter();
   const [current, setCurrent] = useState(0);
 
@@ -88,7 +86,7 @@ export default function HeroSection() {
 
               {/* CTA 버튼 */}
               <button
-                onClick={() => banner.ctaLink ? router.push(banner.ctaLink) : openModal()}
+                onClick={() => router.push(banner.ctaLink ?? '/#rent-cars')}
                 className="relative overflow-hidden px-8 py-4 bg-white text-primary-dark font-bold rounded-lg text-lg shadow-lg border border-white/50 hover:bg-primary hover:text-white hover:border-primary before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/40 before:to-transparent hover:before:translate-x-full before:transition-transform before:duration-700 before:ease-in-out"
                 style={{
                   transition: 'background-color 0.4s ease 0.25s, color 0.4s ease 0.25s, border-color 0.4s ease 0.25s',

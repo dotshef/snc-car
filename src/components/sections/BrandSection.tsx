@@ -59,7 +59,7 @@ export default function BrandSection() {
 
       {/* ── 업체 정보 + 지도 (Footer 영역) ── */}
       <div className="py-10">
-        <div className="container mx-auto px-4 max-w-6xl">
+        <div className="container mx-auto px-4 max-w-5xl">
           <div className="flex flex-col-reverse sm:flex-row sm:gap-8 sm:items-center">
 
             {/* ── 왼쪽: 텍스트 내용 ── */}
@@ -96,7 +96,7 @@ export default function BrandSection() {
 
             {/* ── 오른쪽: 지도 이미지 ── */}
             {/* 반응형 너비: w-[모바일] sm:w-[sm] md:w-[md] */}
-            <div className="w-full md:w-[400px] lg:w-[600px] mb-8 sm:mb-0 flex-shrink-0">
+            <div className="w-full md:w-[400px] lg:w-[500px] mb-8 sm:mb-0 flex-shrink-0">
               <Image
                 src="/images/map.png"
                 alt="오시는 길"

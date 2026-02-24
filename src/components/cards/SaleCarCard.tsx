@@ -1,7 +1,7 @@
 'use client';
 
 import type { SaleCar } from '@/types/saleCar';
-import { useQuoteModal } from '@/hooks/useQuoteModal';
+import { PHONE_TEL_LINK } from '@/data/contact';
 import Image from "next/image";
 
 interface SaleCarCardProps {
@@ -9,16 +9,7 @@ interface SaleCarCardProps {
 }
 
 export default function SaleCarCard({ car }: SaleCarCardProps) {
-  const { openModal } = useQuoteModal();
-
   const manufacturerName = car.manufacturer?.name ?? '';
-
-  const handleConsultClick = () => {
-    openModal({
-      name: car.name,
-      manufacturerName,
-    });
-  };
 
   return (
     <div className="bg-gradient-to-b from-white to-gray-50 border border-border rounded-xl overflow-hidden hover:shadow-xl hover:border-secondary transition-all duration-300 group">
@@ -78,12 +69,12 @@ export default function SaleCarCard({ car }: SaleCarCardProps) {
         </div>
 
         {/* CTA 버튼 */}
-        <button
-          onClick={handleConsultClick}
-          className="relative w-full py-3 bg-primary text-white rounded-lg font-medium shadow-md overflow-hidden hover:bg-primary-dark transition-colors duration-300 before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent hover:before:translate-x-full before:transition-transform before:duration-700 before:ease-in-out"
+        <a
+          href={PHONE_TEL_LINK}
+          className="relative w-full py-3 bg-primary text-white rounded-lg font-medium shadow-md overflow-hidden hover:bg-primary-dark transition-colors duration-300 before:absolute before:inset-0 before:-translate-x-full before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent hover:before:translate-x-full before:transition-transform before:duration-700 before:ease-in-out flex items-center justify-center"
         >
           간편 상담 신청 &gt;
-        </button>
+        </a>
       </div>
     </div>
   );

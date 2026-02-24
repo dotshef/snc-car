@@ -1,7 +1,7 @@
-import type { QuoteRequest } from '@/types/quote';
+import type { QuickQuoteRequest } from '@/types/quote';
 
 interface QuoteEmailTemplateProps {
-  data: QuoteRequest;
+  data: QuickQuoteRequest;
 }
 
 export function QuoteEmailTemplate({ data }: QuoteEmailTemplateProps) {
@@ -12,13 +12,9 @@ export function QuoteEmailTemplate({ data }: QuoteEmailTemplateProps) {
       </h2>
       <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '16px' }}>
         <tbody>
-          <Row label="희망 차종" value={data.selectedCarName || '-'} />
-          <Row label="성함/회사명" value={data.name} />
+          <Row label="이름" value={data.name} />
           <Row label="연락처" value={data.phone} />
-          <Row label="지역" value={data.region} />
-          <Row label="고객 유형" value={data.customerType} />
-          <Row label="초기자금" value={`${data.initialFundType} ${data.initialFundRate}%`} />
-          <Row label="계약기간" value={`${data.contractPeriod}개월`} />
+          <Row label="차량명" value={data.carName} />
           <Row label="접수 시각" value={data.submittedAt || '-'} />
         </tbody>
       </table>

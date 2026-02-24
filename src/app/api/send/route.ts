@@ -1,16 +1,16 @@
 import { Resend } from 'resend';
 import { QuoteEmailTemplate } from '@/email/quote-email-template';
 import { DisposalEmailTemplate } from '@/email/disposal-email-template';
-import type { QuoteRequest } from '@/types/quote';
+import type { QuickQuoteRequest } from '@/types/quote';
 import type { DisposalRequest } from '@/types/disposal';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FROM = 'SNC 오토 <no-reply@dotshef.com>'; // TODO 고객 도메인으로 변경
-const TO = ['wjdtjddn37@naver.com'];
+const FROM = 'SNC 오토 <no-reply@dotshef.com>';
+const TO = ['wjdtjddn37@kakao.com'];
 
 type SendRequestBody =
-  | { type: 'quote'; data: QuoteRequest }
+  | { type: 'quote'; data: QuickQuoteRequest }
   | { type: 'disposal'; data: DisposalRequest };
 
 export async function POST(request: Request) {

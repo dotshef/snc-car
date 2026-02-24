@@ -3,8 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useQuoteModal } from '@/hooks/useQuoteModal';
-import { PHONE_NUMBER, PHONE_TEL_LINK } from '@/data/contact';
 
 // 네비게이션 공통 className
 const NAV_LINK_CLS =
@@ -17,7 +15,6 @@ const MOBILE_NAV_LINK_CLS =
   'block px-4 py-3 text-base font-semibold text-text-secondary hover:text-primary hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0';
 
 export default function Header() {
-  const { openModal } = useQuoteModal();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const currentMonth = new Date().getMonth() + 1;
 
@@ -60,21 +57,6 @@ export default function Header() {
             <Link href="/disposal" className={CTA_BTN_CLS}>
               차량반납 상담
             </Link>
-            <button onClick={() => openModal()} className={CTA_BTN_CLS}>
-              무심사 신청
-            </button>
-            <a href={PHONE_TEL_LINK} className={PHONE_LINK_CLS}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              {PHONE_NUMBER}
-            </a>
           </nav>
 
           {/* 모바일 햄버거 버튼 */}
@@ -111,6 +93,9 @@ export default function Header() {
             </Link>
             <Link href="/#released-cars" className={MOBILE_NAV_LINK_CLS} onClick={() => setIsMenuOpen(false)}>
               출고 내역
+            </Link>
+            <Link href="/disposal" className={MOBILE_NAV_LINK_CLS} onClick={() => setIsMenuOpen(false)}>
+              차량 반납 상담
             </Link>
           </nav>
         </div>

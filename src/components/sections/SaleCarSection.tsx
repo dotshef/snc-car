@@ -66,9 +66,11 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
     <section id={sectionId} className="py-16 bg-white">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* 섹션 헤더 */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          <h2 className="text-2xl sm:text-4xl font-bold text-text-primary">{title}</h2>
-        </div>
+        <FadeInUp delay={0}>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+            <h2 className="text-2xl sm:text-4xl font-bold text-text-primary">{title}</h2>
+          </div>
+        </FadeInUp>
 
         {isLoading ? (
           <>
@@ -104,16 +106,18 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
         ) : (
           <>
             {/* 제조사 필터 */}
-            <div className="mb-8">
-              <ManufacturerFilter
-                manufacturers={manufacturers}
-                selectedCode={selectedManufacturer}
-                onSelect={handleManufacturerSelect}
-              />
-            </div>
+            <FadeInUp delay={100}>
+              <div className="mb-8">
+                <ManufacturerFilter
+                  manufacturers={manufacturers}
+                  selectedCode={selectedManufacturer}
+                  onSelect={handleManufacturerSelect}
+                />
+              </div>
+            </FadeInUp>
 
             {/* 차량 그리드 */}
-            <FadeInUp delay={100}>
+            <FadeInUp delay={200}>
             {displayedCars.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {displayedCars.slice(0, 6).map((car) => (

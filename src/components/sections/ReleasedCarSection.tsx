@@ -27,7 +27,10 @@ export default function ReleasedCarSection() {
   if (isLoading) {
     return (
       <section id="released-cars" className="py-16 bg-white">
-        <div className="container mx-auto px-4 max-w-5xl">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <h2 className="text-2xl md:text-4xl font-bold text-text-primary mb-8 text-center">
+            최근 출고 내역
+          </h2>
           <div className="text-center text-text-muted">로딩 중...</div>
         </div>
       </section>
@@ -39,7 +42,7 @@ export default function ReleasedCarSection() {
         <section id="released-cars" className="py-16 bg-white">
           <div className="container mx-auto px-4 max-w-6xl">
             {/* 섹션 헤더 */}
-            <h2 className="text-2xl font-bold text-text-primary mb-8 text-center">
+            <h2 className="text-2xl md:text-4xl font-bold text-text-primary mb-8 text-center">
               최근 출고 내역
             </h2>
 

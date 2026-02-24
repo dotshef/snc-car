@@ -64,7 +64,7 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
 
   return (
     <section id={sectionId} className="py-16 bg-white">
-      <div className="container mx-auto px-4 max-w-6xl">
+      <div className="container mx-auto px-4 max-w-7xl">
         {/* 섹션 헤더 */}
         <FadeInUp delay={0}>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
@@ -119,8 +119,8 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
             {/* 차량 그리드 */}
             <FadeInUp delay={200}>
             {displayedCars.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {displayedCars.slice(0, 6).map((car) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {displayedCars.slice(0, 8).map((car) => (
                   <SaleCarCard key={car.sale_car_id} car={car} />
                 ))}
               </div>

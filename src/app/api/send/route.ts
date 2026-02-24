@@ -1,16 +1,17 @@
 import { Resend } from 'resend';
-import { QuoteEmailTemplate } from '@/email/quote-email-template';
+import { QuickQuoteEmailTemplate, FullQuoteEmailTemplate } from '@/email/quote-email-template';
 import { DisposalEmailTemplate } from '@/email/disposal-email-template';
-import type { QuickQuoteRequest } from '@/types/quote';
+import type { QuickQuoteRequest, QuoteRequest } from '@/types/quote';
 import type { DisposalRequest } from '@/types/disposal';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM = 'SNC 오토 <no-reply@dotshef.com>';
-const TO = ['wjdtjddn37@kakao.com'];
+const TO = ['contact@dotshef.com'];
 
 type SendRequestBody =
-  | { type: 'quote'; data: QuickQuoteRequest }
+  | { type: 'quickQuote'; data: QuickQuoteRequest }
+  | { type: 'quote'; data: QuoteRequest }
   | { type: 'disposal'; data: DisposalRequest };
 
 export async function POST(request: Request) {
@@ -20,9 +21,12 @@ export async function POST(request: Request) {
     let subject: string;
     let reactElement: React.ReactElement;
 
-    if (body.type === 'quote') {
+    if (body.type === 'quickQuote') {
+      subject = `[S&C 문의] ${body.data.name} 간편 견적 문의합니다.`;
+      reactElement = QuickQuoteEmailTemplate({ data: body.data });
+    } else if (body.type === 'quote') {
       subject = `[S&C 문의] ${body.data.name} 견적 문의합니다.`;
-      reactElement = QuoteEmailTemplate({ data: body.data });
+      reactElement = FullQuoteEmailTemplate({ data: body.data });
     } else if (body.type === 'disposal') {
       subject = `[S&C 문의] ${body.data.name} 차량 반납 문의합니다.`;
       reactElement = DisposalEmailTemplate({ data: body.data });

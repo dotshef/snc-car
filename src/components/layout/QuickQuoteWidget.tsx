@@ -28,7 +28,7 @@ export default function QuickQuoteWidget() {
       const res = await fetch('/api/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'quote', data }),
+        body: JSON.stringify({ type: 'quickQuote', data }),
       });
       if (!res.ok) throw new Error('전송 실패');
       setIsDone(true);

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ConditionalLayout from "@/components/layout/ConditionalLayout";
 import QuickQuoteWidget from "@/components/layout/QuickQuoteWidget";
+import ClientProviders from "@/components/providers/ClientProviders";
 import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
@@ -30,10 +31,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ConditionalLayout>
-          {children}
-        </ConditionalLayout>
-        <QuickQuoteWidget />
+        <ClientProviders>
+          <ConditionalLayout>
+            {children}
+          </ConditionalLayout>
+          <QuickQuoteWidget />
+        </ClientProviders>
         <Analytics />
       </body>
     </html>

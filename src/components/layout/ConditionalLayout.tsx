@@ -2,7 +2,6 @@
 
 import { usePathname } from 'next/navigation';
 import Header from './Header';
-import Footer from './Footer';
 import MobileBottomBar from './MobileBottomBar';
 
 export default function ConditionalLayout({ children }: { children: React.ReactNode }) {
@@ -14,7 +13,6 @@ export default function ConditionalLayout({ children }: { children: React.ReactN
       {!isAdmin && <Header />}
       {!isAdmin && <div className="pb-[60px] md:pb-0">{children}</div>}
       {isAdmin && children}
-      {!isAdmin && <Footer />}
       {!isAdmin && <MobileBottomBar />}
     </>
   );

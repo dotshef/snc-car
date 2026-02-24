@@ -5,6 +5,7 @@ import ManufacturerFilter from '@/components/filters/ManufacturerFilter';
 import SaleCarCard from '@/components/cards/SaleCarCard';
 import type { Manufacturer, ManufacturerCategory } from '@/types/manufacturer';
 import type { SaleCar } from '@/types/saleCar';
+import FadeInUp from "@/components/animation/FadeInUp";
 
 interface SaleCarSectionProps {
   sectionId: string;
@@ -66,7 +67,7 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
       <div className="container mx-auto px-4 max-w-6xl">
         {/* 섹션 헤더 */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          <h2 className="text-2xl font-bold text-text-primary">{title}</h2>
+          <h2 className="text-2xl sm:text-4xl font-bold text-text-primary">{title}</h2>
         </div>
 
         {isLoading ? (
@@ -112,6 +113,7 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
             </div>
 
             {/* 차량 그리드 */}
+            <FadeInUp delay={100}>
             {displayedCars.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {displayedCars.slice(0, 6).map((car) => (
@@ -123,6 +125,7 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
                 조건에 맞는 차량이 없습니다.
               </div>
             )}
+            </FadeInUp>
           </>
         )}
       </div>

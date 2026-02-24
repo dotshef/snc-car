@@ -22,15 +22,15 @@ function FAQItem({ faq, isOpen, onToggle }: { faq: typeof faqs[number]; isOpen: 
         onClick={onToggle}
         className={`w-full flex items-center justify-between p-5 text-left rounded-lg transition-colors duration-300 ${
           isOpen
-            ? 'bg-primary-dark text-white'
-            : 'bg-bg-secondary text-text-primary hover:bg-secondary-light'
+            ? 'bg-accent text-white'
+            : 'bg-primary text-white hover:bg-primary-light'
         }`}
       >
         <span className="font-medium pr-4">{faq.question}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${
-            isOpen ? 'rotate-180 text-white/70' : 'text-text-secondary'
+            isOpen ? 'rotate-180 text-white/70' : 'text-secondary-light'
           }`}
           fill="none"
           viewBox="0 0 24 24"
@@ -45,7 +45,7 @@ function FAQItem({ faq, isOpen, onToggle }: { faq: typeof faqs[number]; isOpen: 
         style={{ height }}
       >
         <div ref={contentRef} className="px-5 py-4">
-          <p className="text-text-secondary leading-relaxed whitespace-pre-line">
+          <p className="text-secondary-light leading-relaxed whitespace-pre-line">
             {faq.answer}
           </p>
         </div>
@@ -62,13 +62,11 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-primary-dark">
       <div className="container mx-auto px-4 max-w-3xl">
-        <FadeInUp>
-          <h2 className="text-2xl font-bold text-text-primary mb-8 text-center">
-            자주 묻는 질문
-          </h2>
-        </FadeInUp>
+        <h2 className="text-2xl sm:text-4xl font-bold text-white mb-8 text-center">
+          자주 묻는 질문
+        </h2>
 
         <FadeInUp delay={150}>
           <div className="space-y-3">

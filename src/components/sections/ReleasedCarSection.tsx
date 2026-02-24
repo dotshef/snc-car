@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import ReleasedCarCard from '@/components/cards/ReleasedCarCard';
 import type { ReleasedCar } from '@/types/releasedCar';
+import FadeInUp from '../animation/FadeInUp';
 
 export default function ReleasedCarSection() {
   const [cars, setCars] = useState<ReleasedCar[]>([]);
@@ -54,16 +55,20 @@ export default function ReleasedCarSection() {
     <section id="released-cars" className="py-16 bg-white">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* 섹션 헤더 */}
-        <h2 className="text-2xl font-bold text-text-primary mb-8 text-center">
-          최근 출고 내역
-        </h2>
+        <FadeInUp delay={0}>
+          <h2 className="text-2xl sm:text-4xl font-bold text-text-primary mb-8 text-center">
+            최근 출고 내역
+          </h2>
+        </FadeInUp>
 
+        <FadeInUp delay={100}>
         {/* 출고 차량 그리드 */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {cars.map((car) => (
             <ReleasedCarCard key={car.released_car_id} car={car} />
           ))}
         </div>
+        </FadeInUp>
       </div>
     </section>
   );

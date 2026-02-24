@@ -9,7 +9,7 @@ const strengths = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8 text-primary"
+        className="w-8 h-8 text-accent-light"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -25,7 +25,7 @@ const strengths = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8 text-primary"
+        className="w-8 h-8 text-accent-light"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -41,7 +41,7 @@ const strengths = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8 text-primary"
+        className="w-8 h-8 text-accent-light"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -57,7 +57,7 @@ const strengths = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8 text-primary"
+        className="w-8 h-8 text-accent-light"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -70,16 +70,16 @@ const strengths = [
 
 export default function StrengthSection() {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-primary-dark">
       <div className="container mx-auto px-4 max-w-5xl">
         {/* 섹션 헤더 */}
-        <FadeInUp>
-          <h2 className="text-2xl font-bold text-text-primary mb-2 text-center">
-            왜 <span className="text-[#1e3a5f]">S&C</span> 오토 홀딩스 신차장기렌트리스일까?
-          </h2>
+        <FadeInUp delay={0}>
+        <h2 className="text-2xl sm:text-4xl font-bold text-white mb-2 text-center">
+          왜 S&C 오토 홀딩스 신차장기렌트리스일까?
+        </h2>
         </FadeInUp>
         <FadeInUp delay={100}>
-          <p className="text-text-secondary text-center mb-10">
+          <p className="text-secondary-light text-center mb-10">
             S&C만의 차별화된 서비스를 경험해보세요
           </p>
         </FadeInUp>

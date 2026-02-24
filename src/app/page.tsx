@@ -4,6 +4,7 @@ import StrengthSection from '@/components/sections/StrengthSection';
 import ReleasedCarSection from '@/components/sections/ReleasedCarSection';
 import FAQSection from '@/components/sections/FAQSection';
 import BrandSection from '@/components/sections/BrandSection';
+import PartnerSection from '@/components/sections/PartnerSection';
 
 export default function Home() {
   return (
@@ -19,6 +20,9 @@ export default function Home() {
 
       {/* 즉시출고 섹션 */}
       <SaleCarSection sectionId="immediate-cars" title="즉시출고" immediateOnly />
+
+        {/* 파트너사 섹션 */}
+        <PartnerSection />
 
       {/* S&C 강점 섹션 */}
       <StrengthSection />

@@ -6,11 +6,9 @@ import { useState } from 'react';
 
 // 네비게이션 공통 className
 const NAV_LINK_CLS =
-  'px-2 py-1.5 lg:px-3 lg:py-2 text-sm lg:text-base font-semibold text-text-secondary hover:text-primary transition-colors';
+  'px-3 py-2 text-base font-semibold text-text-secondary hover:text-primary transition-colors';
 const CTA_BTN_CLS =
-  'px-3 py-1.5 lg:px-4 lg:py-2 text-sm lg:text-base font-semibold bg-primary text-white rounded-lg hover:bg-primary transition-all shadow-md';
-const PHONE_LINK_CLS =
-  'px-3 py-1.5 h-9 lg:px-4 lg:py-2 lg:h-10 text-sm lg:text-base font-medium border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-1';
+  'px-3 py-2 text-base font-semibold bg-primary text-white rounded-lg hover:bg-primary transition-all shadow-md';
 const MOBILE_NAV_LINK_CLS =
   'block px-4 py-3 text-base font-semibold text-text-secondary hover:text-primary hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0';
 
@@ -41,7 +39,7 @@ export default function Header() {
           </Link>
 
           {/* 데스크탑 네비게이션 */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-3">
+          <nav className="hidden md:flex items-center gap-2 lg:gap-3">
             <Link href="/#rent-cars" className={NAV_LINK_CLS}>
               장기렌트
             </Link>

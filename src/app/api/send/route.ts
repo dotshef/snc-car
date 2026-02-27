@@ -7,7 +7,7 @@ import type { DisposalRequest } from '@/types/disposal';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM = 'SNC 오토 <no-reply@dotshef.com>';
-const TO = ['wjdtjddn37@kakao.com', 'dydxo3029@kakao.com'];
+const TO = ['wjdtjddn37@kakao.com', 'dydxo3028@kakao.com'];
 
 type SendRequestBody =
   | { type: 'quickQuote'; data: QuickQuoteRequest }

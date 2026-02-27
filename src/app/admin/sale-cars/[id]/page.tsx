@@ -87,8 +87,8 @@ export default function SaleCarDetailPage() {
             <p className="text-text-primary">{item.manufacturers?.name || '-'}</p>
           </div>
           <div>
-            <label className="block text-sm text-text-secondary mb-1">메인페이지 노출여부</label>
-            <p className="text-text-primary">{item.is_visible ? '노출' : '숨김'}</p>
+            <label className="block text-sm text-text-secondary mb-1">정렬 순서</label>
+            <p className="text-text-primary">{item.sort_order}</p>
           </div>
           <div>
             <label className="block text-sm text-text-secondary mb-1">렌트 가격</label>

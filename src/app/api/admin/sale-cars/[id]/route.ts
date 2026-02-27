@@ -67,7 +67,6 @@ export async function PUT(
   const rentPrice = formData.get('rent_price') as string;
   const leasePrice = formData.get('lease_price') as string;
   const immediate = formData.get('immediate') as string;
-  const isVisible = formData.get('is_visible') as string;
   const thumbnail = formData.get('thumbnail') as File | null;
 
   if (!manufacturerId) {
@@ -109,7 +108,6 @@ export async function PUT(
     rent_price: parsedRentPrice,
     lease_price: parsedLeasePrice,
     immediate: immediate === 'true',
-    is_visible: isVisible === 'true',
     updated_at: new Date().toISOString(),
   };
 

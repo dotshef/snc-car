@@ -23,7 +23,7 @@ export async function GET(request: Request) {
   const { data, error, count } = await supabase
     .from('sale_cars')
     .select('*, manufacturers(name)', { count: 'exact' })
-    .order('created_at', { ascending: false })
+    .order('sort_order', { ascending: true })
     .range(from, to);
 
   if (error) {
@@ -58,7 +58,6 @@ export async function POST(request: Request) {
   const rentPrice = formData.get('rent_price') as string;
   const leasePrice = formData.get('lease_price') as string;
   const immediate = formData.get('immediate') as string;
-  const isVisible = formData.get('is_visible') as string;
   const thumbnail = formData.get('thumbnail') as File | null;
 
   // Validation
@@ -108,6 +107,12 @@ export async function POST(request: Request) {
     }
   }
 
+  // Auto-assign sort_order
+  const { count: currentCount } = await supabase
+    .from('sale_cars')
+    .select('*', { count: 'exact', head: true });
+  const sortOrder = currentCount ?? 0;
+
   // DB insert
   const { data: inserted, error: dbError } = await supabase
     .from('sale_cars')
@@ -118,7 +123,7 @@ export async function POST(request: Request) {
       rent_price: parsedRentPrice,
       lease_price: parsedLeasePrice,
       immediate: immediate === 'true',
-      is_visible: isVisible === 'true',
+      sort_order: sortOrder,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     })

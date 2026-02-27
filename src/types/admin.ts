@@ -18,7 +18,7 @@ export interface SaleCarRow {
   rent_price: number | null;
   lease_price: number | null;
   immediate: boolean;
-  is_visible: boolean;
+  sort_order: number;
   created_at: string;
   updated_at: string;
 }

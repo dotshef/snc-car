@@ -19,7 +19,6 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
   const [rentPrice, setRentPrice] = useState('');
   const [leasePrice, setLeasePrice] = useState('');
   const [immediate, setImmediate] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,14 +39,12 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
       setRentPrice(saleCar.rent_price !== null ? String(saleCar.rent_price) : '');
       setLeasePrice(saleCar.lease_price !== null ? String(saleCar.lease_price) : '');
       setImmediate(saleCar.immediate ?? false);
-      setIsVisible(saleCar.is_visible);
     } else {
       setManufacturerId('');
       setName('');
       setRentPrice('');
       setLeasePrice('');
       setImmediate(false);
-      setIsVisible(true);
     }
     setThumbnailFile(null);
     setError(null);
@@ -75,7 +72,6 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
     formData.append('rent_price', rentPrice);
     formData.append('lease_price', leasePrice);
     formData.append('immediate', String(immediate));
-    formData.append('is_visible', String(isVisible));
     if (thumbnailFile) {
       formData.append('thumbnail', thumbnailFile);
     }
@@ -167,27 +163,15 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
         </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="sc_immediate"
-            checked={immediate}
-            onChange={(e) => setImmediate(e.target.checked)}
-            className="w-4 h-4 accent-primary"
-          />
-          <label htmlFor="sc_immediate" className="text-sm text-text-primary">즉시출고</label>
-        </div>
-        <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2">
         <input
           type="checkbox"
-          id="sc_is_visible"
-          checked={isVisible}
-          onChange={(e) => setIsVisible(e.target.checked)}
+          id="sc_immediate"
+          checked={immediate}
+          onChange={(e) => setImmediate(e.target.checked)}
           className="w-4 h-4 accent-primary"
         />
-        <label htmlFor="sc_is_visible" className="text-sm text-text-primary">메인페이지 노출</label>
-        </div>
+        <label htmlFor="sc_immediate" className="text-sm text-text-primary">즉시출고</label>
       </div>
 
       <ImageUpload

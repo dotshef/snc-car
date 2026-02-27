@@ -20,6 +20,7 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
   const [selectedManufacturer, setSelectedManufacturer] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(0);
+  const [slideClass, setSlideClass] = useState('');
 
   const PAGE_SIZE = 8;
 
@@ -60,6 +61,17 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
   const handleManufacturerSelect = (id: number | null) => {
     setSelectedManufacturer((prev) => (prev === id ? null : id));
     setPage(0);
+    setSlideClass('');
+  };
+
+  const goToPrev = () => {
+    setSlideClass('slide-in-right');
+    setPage((p) => p - 1);
+  };
+
+  const goToNext = () => {
+    setSlideClass('slide-in-left');
+    setPage((p) => p + 1);
   };
 
   const filteredCars = selectedManufacturer
@@ -127,7 +139,10 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
             <FadeInUp delay={200}>
               {displayedCars.length > 0 ? (
                 <>
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div
+                    key={page}
+                    className={`grid grid-cols-2 lg:grid-cols-4 gap-6 ${slideClass}`}
+                  >
                     {displayedCars.map((car) => (
                       <SaleCarCard key={car.sale_car_id} car={car} />
                     ))}
@@ -136,7 +151,7 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
                   {totalPages > 1 && (
                     <div className="flex gap-4 mt-8">
                       <button
-                        onClick={() => setPage((p) => p - 1)}
+                        onClick={goToPrev}
                         disabled={page === 0}
                         className="flex-1 flex items-center justify-center gap-2 py-4 border border-border rounded-xl text-text-secondary font-medium hover:bg-bg-secondary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                         aria-label="이전"
@@ -144,7 +159,7 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
                         &#9664; 이전
                       </button>
                       <button
-                        onClick={() => setPage((p) => p + 1)}
+                        onClick={goToNext}
                         disabled={page === totalPages - 1}
                         className="flex-1 flex items-center justify-center gap-2 py-4 border border-border rounded-xl text-text-secondary font-medium hover:bg-bg-secondary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                         aria-label="다음"

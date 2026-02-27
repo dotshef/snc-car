@@ -1,71 +1,22 @@
 'use client';
 
-import { useEffect, useRef, useCallback, useState } from 'react';
 import Image from 'next/image';
 import { partners } from '@/data/partners';
 import FadeInUp from '@/components/animation/FadeInUp';
+import { useSlider } from '@/hooks/useSlider';
+import DraggableTrack from '@/components/ui/DraggableTrack';
 
 const ROWS = 2;
-const TOTAL_COLS = Math.ceil(partners.length / ROWS); // 10
-// translateX % 기준: inner track 자신의 width 기준 → 1열 = 100/TOTAL_COLS %
-const STEP_PCT = 100 / TOTAL_COLS; // 10%
-
-function getColsVisible(): number {
-  if (typeof window === 'undefined') return 5;
-  if (window.innerWidth >= 1024) return 5;
-  if (window.innerWidth >= 768) return 3;
-  return 2;
-}
+const TOTAL_COLS = Math.ceil(partners.length / ROWS);
+const BREAKPOINTS = { lg: 5, md: 3, sm: 2 };
 
 export default function PartnerSection() {
-  const [colsVisible, setColsVisible] = useState(5);
-  const [currentCol, setCurrentCol] = useState(0);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  // breakpoint 변경 감지
-  useEffect(() => {
-    const update = () => {
-      const next = getColsVisible();
-      setColsVisible(next);
-      // 변경된 breakpoint의 MAX_COL 범위로 clamp
-      setCurrentCol((prev) => Math.min(prev, TOTAL_COLS - next));
-    };
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, []);
-
-  const goNext = useCallback(() => {
-    setCurrentCol((prev) => {
-      const maxCol = TOTAL_COLS - getColsVisible();
-      return prev >= maxCol ? 0 : prev + 1;
-    });
-  }, []);
-
-  const goPrev = useCallback(() => {
-    setCurrentCol((prev) => {
-      const maxCol = TOTAL_COLS - getColsVisible();
-      return prev <= 0 ? maxCol : prev - 1;
-    });
-  }, []);
-
-  const startAutoSlide = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(goNext, 2000);
-  }, [goNext]);
-
-  useEffect(() => {
-    startAutoSlide();
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [startAutoSlide]);
-
-  const handlePrev = () => { goPrev(); startAutoSlide(); };
-  const handleNext = () => { goNext(); startAutoSlide(); };
-
-  const trackWidth = `${(TOTAL_COLS / colsVisible) * 100}%`;
-  const translateX = -(currentCol * STEP_PCT);
+  const { trackWidth, translateX, handlePrev, handleNext } = useSlider({
+    totalCols: TOTAL_COLS,
+    breakpoints: BREAKPOINTS,
+    autoPlayInterval: 2000,
+    stepMode: 'one',
+  });
 
   return (
     <section className="py-16 bg-bg-secondary">
@@ -92,34 +43,36 @@ export default function PartnerSection() {
               </svg>
             </button>
 
-            {/* 뷰포트 */}
-            <div className="overflow-hidden flex-1">
-              {/* 내부 트랙 */}
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateRows: `repeat(${ROWS}, 1fr)`,
-                  gridTemplateColumns: `repeat(${TOTAL_COLS}, 1fr)`,
-                  gridAutoFlow: 'column',
-                  width: trackWidth,
-                  transform: `translateX(${translateX}%)`,
-                  transition: 'transform 0.4s ease',
-                }}
-              >
-                {partners.map((partner) => (
-                  <div key={partner.id} className="p-2">
-                    <div className="border border-border rounded-xl bg-white flex items-center justify-center h-24">
-                      <Image
-                        src={partner.src}
-                        alt={partner.alt}
-                        width={160}
-                        height={70}
-                      />
+            {/* 드래그 가능 뷰포트 */}
+            <DraggableTrack onPrev={handlePrev} onNext={handleNext} className="flex-1">
+              {({ offset, isDragging }) => (
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateRows: `repeat(${ROWS}, 1fr)`,
+                    gridTemplateColumns: `repeat(${TOTAL_COLS}, 1fr)`,
+                    gridAutoFlow: 'column',
+                    width: trackWidth,
+                    transform: `translateX(calc(${translateX}% + ${offset}px))`,
+                    transition: isDragging ? 'none' : 'transform 0.4s ease',
+                    willChange: 'transform',
+                  }}
+                >
+                  {partners.map((partner) => (
+                    <div key={partner.id} className="p-2">
+                      <div className="border border-border rounded-xl bg-white flex items-center justify-center h-24">
+                        <Image
+                          src={partner.src}
+                          alt={partner.alt}
+                          width={160}
+                          height={70}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+                  ))}
+                </div>
+              )}
+            </DraggableTrack>
 
             {/* 우측 버튼 */}
             <button

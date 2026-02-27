@@ -12,7 +12,8 @@
       "Bash(pwsh:*)",
       "Bash(dir:*)",
       "Bash(grep:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

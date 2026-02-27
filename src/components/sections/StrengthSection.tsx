@@ -86,7 +86,7 @@ export default function StrengthSection() {
 
         <FadeInUp delay={200}>
           {/* 강점 카드 그리드 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {strengths.map((strength) => (
                 <StrengthCard
                     key={strength.id}

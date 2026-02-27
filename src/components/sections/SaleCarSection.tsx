@@ -71,7 +71,7 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
 
   return (
     <section id={sectionId} className="py-16 bg-white">
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4 max-w-screen-2xl">
         {/* 섹션 헤더 */}
         <FadeInUp delay={0}>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">

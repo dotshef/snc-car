@@ -16,14 +16,13 @@ export default function SaleCarCard({ car }: SaleCarCardProps) {
     <div className="bg-gradient-to-b from-white to-gray-50 border border-border rounded-xl overflow-hidden hover:shadow-xl hover:border-secondary transition-all duration-300 group">
       {/* 차량 이미지 */}
       <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100">
-        <div className="absolute inset-0 flex items-center justify-center text-text-muted group-hover:scale-105 transition-transform duration-300">
+        <div className="absolute inset-5 flex items-center justify-center text-text-muted group-hover:scale-105 transition-transform duration-300">
           {car.thumbnail_url ? (
             <Image
               src={car.thumbnail_url}
               alt={car.name}
-              width={400}
-              height={300}
-              className="object-cover"
+              fill
+              className="object-contain"
             />
           ) : null}
         </div>

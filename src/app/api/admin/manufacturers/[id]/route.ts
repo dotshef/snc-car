@@ -146,6 +146,11 @@ export async function PUT(
     return NextResponse.json({ error: 'DB 수정 실패: ' + dbError.message }, { status: 500 });
   }
 
+  // Delete old image from storage if a new one was uploaded and paths differ
+  if (newLogoPath && existing.logo_path && existing.logo_path !== newLogoPath) {
+    await supabase.storage.from(BUCKET).remove([existing.logo_path]);
+  }
+
   const transformed = {
     ...updated,
     logo_path: getPublicImageUrl(updated.logo_path),

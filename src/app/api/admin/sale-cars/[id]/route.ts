@@ -132,6 +132,11 @@ export async function PUT(
     return NextResponse.json({ error: 'DB 수정 실패: ' + dbError.message }, { status: 500 });
   }
 
+  // Delete old image from storage if a new one was uploaded and paths differ
+  if (newThumbnailPath && existing.thumbnail_path && existing.thumbnail_path !== newThumbnailPath) {
+    await supabase.storage.from(BUCKET).remove([existing.thumbnail_path]);
+  }
+
   const transformed = {
     ...updated,
     thumbnail_path: getPublicImageUrl(updated.thumbnail_path),

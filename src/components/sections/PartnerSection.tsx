@@ -72,7 +72,7 @@ export default function PartnerSection() {
       <div className="container mx-auto px-4 max-w-6xl">
         {/* 제목 */}
         <FadeInUp delay={0}>
-          <h2 className="text-2xl sm:text-4xl font-bold text-center mb-10 text-text-primary">
+          <h2 className="text-3xl sm:text-5xl font-bold text-center mb-10 text-text-primary">
             에쓰엔씨오토홀딩스{' '}
             <span className="text-accent">주요 파트너사</span>
           </h2>

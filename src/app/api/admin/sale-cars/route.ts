@@ -55,7 +55,6 @@ export async function POST(request: Request) {
   const formData = await request.formData();
   const manufacturerId = formData.get('manufacturer_id') as string;
   const name = formData.get('name') as string;
-  const description = formData.get('description') as string;
   const rentPrice = formData.get('rent_price') as string;
   const leasePrice = formData.get('lease_price') as string;
   const immediate = formData.get('immediate') as string;
@@ -115,7 +114,6 @@ export async function POST(request: Request) {
     .insert({
       manufacturer_id: parseInt(manufacturerId, 10),
       name: name.trim(),
-      description: description?.trim() || null,
       thumbnail_path: thumbnailPath,
       rent_price: parsedRentPrice,
       lease_price: parsedLeasePrice,

@@ -64,7 +64,6 @@ export async function PUT(
   const formData = await request.formData();
   const manufacturerId = formData.get('manufacturer_id') as string;
   const name = formData.get('name') as string;
-  const description = formData.get('description') as string;
   const rentPrice = formData.get('rent_price') as string;
   const leasePrice = formData.get('lease_price') as string;
   const immediate = formData.get('immediate') as string;
@@ -107,7 +106,6 @@ export async function PUT(
   const updateData: Record<string, unknown> = {
     manufacturer_id: parseInt(manufacturerId, 10),
     name: name.trim(),
-    description: description?.trim() || null,
     rent_price: parsedRentPrice,
     lease_price: parsedLeasePrice,
     immediate: immediate === 'true',

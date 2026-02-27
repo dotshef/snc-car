@@ -108,12 +108,6 @@ export default function SaleCarDetailPage() {
               {formatDate(item.created_at)}
             </p>
           </div>
-          {item.description && (
-            <div className="md:col-span-2">
-              <label className="block text-sm text-text-secondary mb-1">설명</label>
-              <p className="text-text-primary whitespace-pre-wrap">{item.description}</p>
-            </div>
-          )}
           {item.thumbnail_path && (
             <div className="md:col-span-2">
               <label className="block text-sm text-text-secondary mb-1">썸네일</label>

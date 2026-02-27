@@ -14,7 +14,6 @@ export interface SaleCarRow {
   sale_car_id: number;
   manufacturer_id: number;
   name: string;
-  description: string | null;
   thumbnail_path: string;
   rent_price: number | null;
   lease_price: number | null;

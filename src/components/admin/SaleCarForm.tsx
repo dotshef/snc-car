@@ -16,7 +16,6 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
   const [manufacturers, setManufacturers] = useState<ManufacturerRow[]>([]);
   const [manufacturerId, setManufacturerId] = useState('');
   const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
   const [rentPrice, setRentPrice] = useState('');
   const [leasePrice, setLeasePrice] = useState('');
   const [immediate, setImmediate] = useState(false);
@@ -38,7 +37,6 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
     if (saleCar) {
       setManufacturerId(String(saleCar.manufacturer_id));
       setName(saleCar.name);
-      setDescription(saleCar.description || '');
       setRentPrice(saleCar.rent_price !== null ? String(saleCar.rent_price) : '');
       setLeasePrice(saleCar.lease_price !== null ? String(saleCar.lease_price) : '');
       setImmediate(saleCar.immediate ?? false);
@@ -46,7 +44,6 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
     } else {
       setManufacturerId('');
       setName('');
-      setDescription('');
       setRentPrice('');
       setLeasePrice('');
       setImmediate(false);
@@ -75,7 +72,6 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
     const formData = new FormData();
     formData.append('manufacturer_id', manufacturerId);
     formData.append('name', name);
-    formData.append('description', description);
     formData.append('rent_price', rentPrice);
     formData.append('lease_price', leasePrice);
     formData.append('immediate', String(immediate));
@@ -169,17 +165,6 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
             className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
           />
         </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-text-primary mb-1">설명</label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          rows={3}
-          placeholder="차량 상세 스펙을 입력하세요"
-          className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm resize-none"
-        />
       </div>
 
       <div className="flex items-center gap-4">

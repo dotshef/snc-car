@@ -199,7 +199,7 @@ export default function QuoteModal() {
                             </svg>
                         </button>
                     </div>
-                    <h2 className="text-2xl font-bold text-text-primary text-center pb-4">S&C 빠른 견적 문의</h2>
+                    <h2 className="text-3xl font-bold text-text-primary text-center pb-4">S&C 빠른 견적 문의</h2>
                 </div>
 
                 {isSubmitted ? (

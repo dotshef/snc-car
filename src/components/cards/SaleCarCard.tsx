@@ -40,29 +40,27 @@ export default function SaleCarCard({ car }: SaleCarCardProps) {
 
       {/* 차량 정보 */}
       <div className="p-4">
-        {/* 제조사 이름 */}
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-sm text-text-secondary">{manufacturerName}</span>
-        </div>
 
         {/* 차량명 */}
-        <h3 className="text-lg font-bold text-text-primary mb-1">{car.name}</h3>
-
-        {/* 차량 설명 */}
-        {car.description && (
-          <p className="text-xs text-text-secondary mb-3 line-clamp-2">{car.description}</p>
-        )}
+        <div className="flex items-center gap-2 mb-2">
+          {car.manufacturer?.logo_url ? (
+            <Image src={car.manufacturer.logo_url} alt={manufacturerName} width={32} height={20} className="object-contain shrink-0" />
+          ) : (
+            <span className="text-sm text-text-secondary shrink-0">{manufacturerName}</span>
+          )}
+          <h3 className="text-xl font-bold text-text-primary">{car.name}</h3>
+        </div>
 
         {/* 가격 정보 */}
-        <div className="space-y-1 mb-4">
-          <p className="text-sm">
-            <span className="text-text-secondary">렌트</span>{' '}
+        <div className="space-y-1.5 mb-4">
+          <p className="text-base flex justify-between">
+            <span className="text-text-secondary">렌트</span>
             <span className="font-semibold text-text-primary">
               {car.rent_price !== null ? `${car.rent_price.toLocaleString()}원` : '비용문의'}
             </span>
           </p>
-          <p className="text-sm">
-            <span className="text-text-secondary">리스</span>{' '}
+          <p className="text-base flex justify-between">
+            <span className="text-text-secondary">리스</span>
             <span className="font-semibold text-text-primary">
               {car.lease_price !== null ? `${car.lease_price.toLocaleString()}원` : '비용문의'}
             </span>

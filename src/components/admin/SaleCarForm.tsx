@@ -25,7 +25,7 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/admin/manufacturers')
+    fetch('/api/admin/manufacturers?limit=100')
       .then((res) => res.json())
       .then((result) => {
         if (result.data) setManufacturers(result.data);

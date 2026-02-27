@@ -19,6 +19,9 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
   const [cars, setCars] = useState<SaleCar[]>([]);
   const [selectedManufacturer, setSelectedManufacturer] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(0);
+
+  const PAGE_SIZE = 8;
 
   useEffect(() => {
     async function loadData() {
@@ -56,11 +59,15 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
 
   const handleManufacturerSelect = (id: number | null) => {
     setSelectedManufacturer((prev) => (prev === id ? null : id));
+    setPage(0);
   };
 
-  const displayedCars = selectedManufacturer
+  const filteredCars = selectedManufacturer
     ? cars.filter((car) => car.manufacturer_id === selectedManufacturer)
     : cars;
+
+  const totalPages = Math.ceil(filteredCars.length / PAGE_SIZE);
+  const displayedCars = filteredCars.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   return (
     <section id={sectionId} className="py-16 bg-white">
@@ -118,17 +125,43 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
 
             {/* 차량 그리드 */}
             <FadeInUp delay={200}>
-            {displayedCars.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {displayedCars.slice(0, 8).map((car) => (
-                  <SaleCarCard key={car.sale_car_id} car={car} />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12 text-text-muted">
-                조건에 맞는 차량이 없습니다.
-              </div>
-            )}
+              {displayedCars.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {displayedCars.map((car) => (
+                      <SaleCarCard key={car.sale_car_id} car={car} />
+                    ))}
+                  </div>
+
+                  {totalPages > 1 && (
+                    <div className="flex items-center justify-center gap-4 mt-8">
+                      <button
+                        onClick={() => setPage((p) => p - 1)}
+                        disabled={page === 0}
+                        className="w-10 h-10 flex items-center justify-center rounded-full border border-border text-text-secondary hover:bg-bg-secondary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        aria-label="이전"
+                      >
+                        &#8249;
+                      </button>
+                      <span className="text-sm text-text-secondary">
+                        {page + 1} / {totalPages}
+                      </span>
+                      <button
+                        onClick={() => setPage((p) => p + 1)}
+                        disabled={page === totalPages - 1}
+                        className="w-10 h-10 flex items-center justify-center rounded-full border border-border text-text-secondary hover:bg-bg-secondary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        aria-label="다음"
+                      >
+                        &#8250;
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="text-center py-12 text-text-muted">
+                  조건에 맞는 차량이 없습니다.
+                </div>
+              )}
             </FadeInUp>
           </>
         )}

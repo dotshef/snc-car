@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import type { QuickQuoteRequest } from '@/types/quote';
 import { PHONE_TEL_LINK, PHONE_NUMBER } from '@/data/contact';
 
 const KAKAO_URL = 'https://open.kakao.com/o/s1tj93hi';
 
 export default function QuickQuoteWidget() {
+  const pathname = usePathname();
   const [form, setForm] = useState({ name: '', phone: '', carName: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDone, setIsDone] = useState(false);
@@ -38,6 +40,8 @@ export default function QuickQuoteWidget() {
       setIsSubmitting(false);
     }
   };
+
+  if (pathname.startsWith('/admin')) return null;
 
   return (
     <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col w-52 shadow-xl rounded-l-xl overflow-hidden border border-border/50">

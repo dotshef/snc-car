@@ -91,12 +91,13 @@ export async function PUT(
     }
 
     const ext = thumbnail.name.split('.').pop() || 'webp';
-    newThumbnailPath = `sale-cars/${saleCarId}/thumb.${ext}`;
+    const uuid = crypto.randomUUID();
+    newThumbnailPath = `sale-cars/${uuid}/thumb.${ext}`;
 
     const arrayBuffer = await thumbnail.arrayBuffer();
     const { error: uploadError } = await supabase.storage
       .from(BUCKET)
-      .upload(newThumbnailPath, arrayBuffer, { contentType: thumbnail.type, upsert: true });
+      .upload(newThumbnailPath, arrayBuffer, { contentType: thumbnail.type, upsert: false });
 
     if (uploadError) {
       return NextResponse.json({ error: '이미지 업로드 실패: ' + uploadError.message }, { status: 500 });

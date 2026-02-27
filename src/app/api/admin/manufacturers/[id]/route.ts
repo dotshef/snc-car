@@ -106,12 +106,13 @@ export async function PUT(
     }
 
     const ext = logo.name.split('.').pop() || 'png';
-    newLogoPath = `manufacturers/${manufacturerId}/logo.${ext}`;
+    const uuid = crypto.randomUUID();
+    newLogoPath = `manufacturers/${uuid}/logo.${ext}`;
 
     const arrayBuffer = await logo.arrayBuffer();
     const { error: uploadError } = await supabase.storage
       .from(BUCKET)
-      .upload(newLogoPath, arrayBuffer, { contentType: logo.type, upsert: true });
+      .upload(newLogoPath, arrayBuffer, { contentType: logo.type, upsert: false });
 
     if (uploadError) {
       return NextResponse.json({ error: '이미지 업로드 실패: ' + uploadError.message }, { status: 500 });

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Pagination from '@/components/admin/Pagination';
+import ReorderButtons from '@/components/admin/ReorderButtons';
 import { formatDate } from '@/utils/formatters';
 import type { SaleCarWithManufacturer, PaginatedResponse } from '@/types/admin';
 
@@ -79,21 +80,20 @@ export default function SaleCarsListPage() {
         <table className="w-full table-fixed">
           <thead>
             <tr className="bg-primary-dark text-white text-sm">
-              <th className="px-3 py-3 text-center font-medium w-[12%]">순서</th>
-              <th className="px-4 py-3 text-left font-medium w-[28%]">차량명</th>
-              <th className="px-4 py-3 text-left font-medium w-[20%]">제조사</th>
-              <th className="px-4 py-3 text-center font-medium w-[10%]">즉시출고</th>
-              <th className="px-4 py-3 text-left font-medium w-[20%]">작성날짜</th>
+              <th className="px-3 py-3 text-center font-medium w-[12%]">정렬</th>
+              <th className="px-4 py-3 text-left font-medium w-[34%]">차량명</th>
+              <th className="px-4 py-3 text-left font-medium w-[26%]">제조사</th>
+              <th className="px-4 py-3 text-left font-medium w-[28%]">작성날짜</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={5} className="p-8 text-center text-text-secondary">로딩 중...</td>
+                <td colSpan={4} className="p-8 text-center text-text-secondary">로딩 중...</td>
               </tr>
             ) : data.length === 0 ? (
               <tr>
-                <td colSpan={5} className="p-8 text-center text-text-secondary">등록된 판매차량이 없습니다</td>
+                <td colSpan={4} className="p-8 text-center text-text-secondary">등록된 판매차량이 없습니다</td>
               </tr>
             ) : (
               data.map((item, index) => (
@@ -102,32 +102,17 @@ export default function SaleCarsListPage() {
                   onClick={() => router.push(`/admin/sale-cars/${item.sale_car_id}`)}
                   className="border-t border-border hover:bg-bg-secondary cursor-pointer transition-colors"
                 >
-                  <td className="px-3 py-3 text-sm text-center" onClick={(e) => e.stopPropagation()}>
-                    <div className="flex items-center justify-center gap-1">
-                      <button
-                        onClick={(e) => handleReorder(e, item.sale_car_id, 'up')}
-                        disabled={isFirst(index) || reordering === item.sale_car_id}
-                        className="w-6 h-6 flex items-center justify-center rounded hover:bg-bg-secondary disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-text-secondary"
-                        title="위로"
-                      >
-                        ▲
-                      </button>
-                      <button
-                        onClick={(e) => handleReorder(e, item.sale_car_id, 'down')}
-                        disabled={isLast(index) || reordering === item.sale_car_id}
-                        className="w-6 h-6 flex items-center justify-center rounded hover:bg-bg-secondary disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-text-secondary"
-                        title="아래로"
-                      >
-                        ▼
-                      </button>
-                    </div>
+                  <td className="px-3 py-3 text-center" onClick={(e) => e.stopPropagation()}>
+                    <ReorderButtons
+                      onUp={(e) => handleReorder(e, item.sale_car_id, 'up')}
+                      onDown={(e) => handleReorder(e, item.sale_car_id, 'down')}
+                      disabledUp={isFirst(index) || reordering === item.sale_car_id}
+                      disabledDown={isLast(index) || reordering === item.sale_car_id}
+                    />
                   </td>
                   <td className="px-4 py-3 text-sm text-text-primary font-medium">{item.name}</td>
                   <td className="px-4 py-3 text-sm text-text-secondary">
                     {item.manufacturers?.name || '-'}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-center">
-                    {item.immediate ? <span className="text-badge-immediate font-medium">해당</span> : '-'}
                   </td>
                   <td className="px-4 py-3 text-sm text-text-secondary">
                     {formatDate(item.created_at)}

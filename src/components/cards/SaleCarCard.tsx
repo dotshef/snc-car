@@ -27,14 +27,17 @@ export default function SaleCarCard({ car }: SaleCarCardProps) {
           ) : null}
         </div>
 
-        {/* 즉시출고 뱃지 */}
-        {car.immediate && (
-          <div className="absolute top-2 left-2">
+        {/* 뱃지 */}
+        <div className="absolute top-2 left-2 flex gap-1">
+          {car.immediate && (
             <span className="px-2 py-1 text-xs text-white rounded bg-badge-immediate">
               즉시출고
             </span>
-          </div>
-        )}
+          )}
+          <span className="px-2 py-1 text-xs text-white rounded bg-green-500">
+            프로모션
+          </span>
+        </div>
       </div>
 
       {/* 차량 정보 */}

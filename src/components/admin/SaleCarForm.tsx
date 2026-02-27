@@ -18,7 +18,7 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
   const [name, setName] = useState('');
   const [rentPrice, setRentPrice] = useState('');
   const [leasePrice, setLeasePrice] = useState('');
-  const [immediate, setImmediate] = useState(false);
+  const [immediate, setImmediate] = useState(true);
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,13 +38,13 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
       setName(saleCar.name);
       setRentPrice(saleCar.rent_price !== null ? String(saleCar.rent_price) : '');
       setLeasePrice(saleCar.lease_price !== null ? String(saleCar.lease_price) : '');
-      setImmediate(saleCar.immediate ?? false);
+      setImmediate(saleCar.immediate ?? true);
     } else {
       setManufacturerId('');
       setName('');
       setRentPrice('');
       setLeasePrice('');
-      setImmediate(false);
+      setImmediate(true);
     }
     setThumbnailFile(null);
     setError(null);
@@ -163,15 +163,18 @@ export default function SaleCarForm({ saleCar, onSuccess, onCancel }: SaleCarFor
         </div>
       </div>
 
+
       <div className="flex items-center gap-2">
         <input
           type="checkbox"
-          id="sc_immediate"
+          id="immediate"
           checked={immediate}
           onChange={(e) => setImmediate(e.target.checked)}
-          className="w-4 h-4 accent-primary"
+          className="w-4 h-4 accent-primary cursor-pointer"
         />
-        <label htmlFor="sc_immediate" className="text-sm text-text-primary">즉시출고</label>
+        <label htmlFor="immediate" className="text-sm font-medium text-text-primary cursor-pointer">
+          즉시출고
+        </label>
       </div>
 
       <ImageUpload

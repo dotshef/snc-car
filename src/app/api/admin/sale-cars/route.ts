@@ -57,7 +57,8 @@ export async function POST(request: Request) {
   const name = formData.get('name') as string;
   const rentPrice = formData.get('rent_price') as string;
   const leasePrice = formData.get('lease_price') as string;
-  const immediate = formData.get('immediate') as string;
+  const immediateRaw = formData.get('immediate') as string;
+  const immediate = immediateRaw !== 'false';
   const thumbnail = formData.get('thumbnail') as File | null;
 
   // Validation
@@ -122,7 +123,7 @@ export async function POST(request: Request) {
       thumbnail_path: thumbnailPath,
       rent_price: parsedRentPrice,
       lease_price: parsedLeasePrice,
-      immediate: immediate === 'true',
+      immediate,
       sort_order: sortOrder,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),

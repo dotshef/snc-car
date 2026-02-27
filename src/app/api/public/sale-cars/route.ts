@@ -24,7 +24,7 @@ export async function GET() {
       thumbnail_url: getPublicImageUrl(row.thumbnail_path),
       rent_price: row.rent_price,
       lease_price: row.lease_price,
-      immediate: row.immediate ?? false,
+      immediate: row.immediate,
       manufacturer: mf ? { manufacturer_id: mf.manufacturer_id, name: mf.name, category: mf.category, logo_url: mf.logo_path ? getPublicImageUrl(mf.logo_path) : null } : null,
     };
   });

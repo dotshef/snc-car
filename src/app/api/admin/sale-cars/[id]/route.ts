@@ -66,7 +66,8 @@ export async function PUT(
   const name = formData.get('name') as string;
   const rentPrice = formData.get('rent_price') as string;
   const leasePrice = formData.get('lease_price') as string;
-  const immediate = formData.get('immediate') as string;
+  const immediateRaw = formData.get('immediate') as string;
+  const immediate = immediateRaw !== 'false';
   const thumbnail = formData.get('thumbnail') as File | null;
 
   if (!manufacturerId) {
@@ -107,7 +108,7 @@ export async function PUT(
     name: name.trim(),
     rent_price: parsedRentPrice,
     lease_price: parsedLeasePrice,
-    immediate: immediate === 'true',
+    immediate,
     updated_at: new Date().toISOString(),
   };
 
@@ -157,7 +158,7 @@ export async function DELETE(
 
   const { data: existing, error: fetchError } = await supabase
     .from('sale_cars')
-    .select('thumbnail_path')
+    .select('thumbnail_path, sort_order')
     .eq('sale_car_id', saleCarId)
     .single();
 
@@ -172,6 +173,23 @@ export async function DELETE(
 
   if (deleteError) {
     return NextResponse.json({ error: 'DB 삭제 실패: ' + deleteError.message }, { status: 500 });
+  }
+
+  // Decrement sort_order for all items after the deleted one
+  const { data: higherItems } = await supabase
+    .from('sale_cars')
+    .select('sale_car_id, sort_order')
+    .gt('sort_order', existing.sort_order);
+
+  if (higherItems && higherItems.length > 0) {
+    await Promise.all(
+      higherItems.map((item) =>
+        supabase
+          .from('sale_cars')
+          .update({ sort_order: item.sort_order - 1 })
+          .eq('sale_car_id', item.sale_car_id)
+      )
+    );
   }
 
   // Delete image from storage after successful DB delete

@@ -91,16 +91,16 @@ export default function SaleCarDetailPage() {
             <p className="text-text-primary">{item.sort_order}</p>
           </div>
           <div>
+            <label className="block text-sm text-text-secondary mb-1">즉시출고</label>
+            <p className="text-text-primary">{item.immediate ? '예' : '아니오'}</p>
+          </div>
+          <div>
             <label className="block text-sm text-text-secondary mb-1">렌트 가격</label>
             <p className="text-text-primary">{formatPrice(item.rent_price)}</p>
           </div>
           <div>
             <label className="block text-sm text-text-secondary mb-1">리스 가격</label>
             <p className="text-text-primary">{formatPrice(item.lease_price)}</p>
-          </div>
-          <div>
-            <label className="block text-sm text-text-secondary mb-1">즉시출고</label>
-            <p className="text-text-primary">{item.immediate ? '즉시출고' : '-'}</p>
           </div>
           <div>
             <label className="block text-sm text-text-secondary mb-1">작성일</label>

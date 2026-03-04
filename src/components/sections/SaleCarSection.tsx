@@ -18,6 +18,17 @@ function getColsPerPage(): number {
   return window.innerWidth >= 1024 ? COLS_LG : COLS_SM;
 }
 
+/** 아이템 인덱스 → 가로 우선(row-first) 그리드 위치 (1-indexed) */
+function getGridPosition(index: number, cols: number) {
+  const itemsPerPage = ROWS * cols;
+  const page = Math.floor(index / itemsPerPage);
+  const idx = index % itemsPerPage;
+  return {
+    gridRow: Math.floor(idx / cols) + 1,
+    gridColumn: page * cols + (idx % cols) + 1,
+  };
+}
+
 // ── Props ──────────────────────────────────────────────────────────
 interface SaleCarSectionProps {
   sectionId: string;
@@ -90,10 +101,9 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
     ? cars.filter((car) => car.manufacturer_id === selectedManufacturer)
     : cars;
 
-  // 실제 채워진 열 수
-  const totalFilledCols = Math.ceil(filteredCars.length / ROWS);
-  // 항상 colsPerPage의 배수 페이지 수 (빈 공간 포함)
-  const totalPages = totalFilledCols > 0 ? Math.ceil(totalFilledCols / colsPerPage) : 0;
+  // 페이지당 아이템 수 (가로 우선 채움: ROWS × colsPerPage)
+  const itemsPerPage = ROWS * colsPerPage;
+  const totalPages = filteredCars.length > 0 ? Math.ceil(filteredCars.length / itemsPerPage) : 0;
   // 트랙 전체 열 수 (빈 열 포함하여 정확히 페이지 배수)
   const totalTrackCols = totalPages * colsPerPage;
 
@@ -192,7 +202,6 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
                           display: 'grid',
                           gridTemplateRows: `repeat(${ROWS}, 1fr)`,
                           gridTemplateColumns: `repeat(${totalTrackCols}, 1fr)`,
-                          gridAutoFlow: 'column',
                           width: trackWidth,
                           transform: `translateX(calc(${translateXPct}% + ${offset}px))`,
                           // 드래그 중: 즉각 반응 / 릴리스: 부드러운 슬라이드
@@ -202,11 +211,18 @@ export default function SaleCarSection({ sectionId, title, category, immediateOn
                           willChange: 'transform',
                         }}
                       >
-                        {filteredCars.map((car) => (
-                          <div key={car.sale_car_id} className="p-2">
-                            <SaleCarCard car={car} />
-                          </div>
-                        ))}
+                        {filteredCars.map((car, i) => {
+                          const pos = getGridPosition(i, colsPerPage);
+                          return (
+                            <div
+                              key={car.sale_car_id}
+                              className="p-2"
+                              style={{ gridRow: pos.gridRow, gridColumn: pos.gridColumn }}
+                            >
+                              <SaleCarCard car={car} />
+                            </div>
+                          );
+                        })}
                       </div>
                     )}
                   </DraggableTrack>

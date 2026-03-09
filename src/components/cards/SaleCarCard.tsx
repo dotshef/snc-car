@@ -67,6 +67,7 @@ export default function SaleCarCard({ car }: SaleCarCardProps) {
               {car.lease_price !== null ? `${car.lease_price.toLocaleString()}원` : '비용문의'}
             </span>
           </p>
+          <p className="text-xs text-text-muted text-right">선납금 30% 기준</p>
         </div>
 
         {/* CTA 버튼 */}

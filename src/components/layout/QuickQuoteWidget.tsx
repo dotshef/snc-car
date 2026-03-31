@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import type { QuickQuoteRequest } from '@/types/quote';
 import { PHONE_TEL_LINK, PHONE_NUMBER } from '@/data/contact';
 
-const KAKAO_URL = 'https://open.kakao.com/o/s1tj93hi';
+const KAKAO_URL = 'https://open.kakao.com/o/sPAs2cii';
 
 export default function QuickQuoteWidget() {
   const pathname = usePathname();
